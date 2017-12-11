@@ -166,10 +166,10 @@ public class JumpFragment extends Fragment{
                     updatePlot();
                 } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ANDROID_STEP_COUNT)) {
                     int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
-                    displayAndroidStepCount(stepCount);
+                    displayHighestJump(stepCount);
                 } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_LOCAL_STEP_COUNT)) {
                     int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
-                    displayLocalStepCount(stepCount);
+                    displayLastJump(stepCount);
                 } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_SERVER_STEP_COUNT)) {
                     int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
                     displayServerStepCount(stepCount);
@@ -204,7 +204,7 @@ public class JumpFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_exercise, container, false);
+        final View view = inflater.inflate(R.layout.fragment_jump, container, false);
 
         //obtain a reference to the accelerometer reading text field
         txtAccelerometerReading = (TextView) view.findViewById(R.id.txtAccelerometerReading);
@@ -350,11 +350,11 @@ public class JumpFragment extends Fragment{
      * Displays the step count as computed by your local step detection algorithm.
      * @param stepCount the number of steps taken since the service started
      */
-    private void displayLocalStepCount(final int stepCount){
+    private void displayLastJump(final int stepCount){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                txtLocalStepCount.setText(String.format(Locale.getDefault(), getString(R.string.local_step_count), stepCount));
+                txtLocalStepCount.setText(String.format(Locale.getDefault(), getString(R.string.last_jump), stepCount));
             }
         });
     }
@@ -363,11 +363,11 @@ public class JumpFragment extends Fragment{
      * Displays the step count as computed by the Android built-in step detection algorithm.
      * @param stepCount the number of steps taken since the service started
      */
-    private void displayAndroidStepCount(final int stepCount){
+    private void displayHighestJump(final int stepCount){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                txtAndroidStepCount.setText(String.format(Locale.getDefault(), getString(R.string.android_step_count), stepCount));
+                txtAndroidStepCount.setText(String.format(Locale.getDefault(), getString(R.string.highest_jump), stepCount));
             }
         });
     }

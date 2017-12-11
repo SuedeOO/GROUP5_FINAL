@@ -90,17 +90,17 @@ public class MainActivity extends AppCompatActivity {
                 return 2;
             }
         },
-        MOTION_DATA(ExerciseFragment.class) {
-            @Override
-            public String getTitle() {
-                return "My Exercise";
-            }
-
-            @Override
-            public int getPageNumber() {
-                return 3;
-            }
-        },
+//        MOTION_DATA(ExerciseFragment.class) {
+//            @Override
+//            public String getTitle() {
+//                return "My Exercise";
+//            }
+//
+//            @Override
+//            public int getPageNumber() {
+//                return 3;
+//            }
+//        },
         AUDIO_DATA(AudioFragment.class) {
             @Override
             public String getTitle() {
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public int getPageNumber() {
-                return 4;
+                return 3;
             }
 //        },
 //        PPG_DATA(HeartRateFragment.class) {
@@ -295,9 +295,9 @@ public class MainActivity extends AppCompatActivity {
         if (getIntent() != null) {
             int notificationID = getIntent().getIntExtra(Constants.KEY.NOTIFICATION_ID, Constants.NOTIFICATION_ID.ACCELEROMETER_SERVICE);
             switch (notificationID){
-                case Constants.NOTIFICATION_ID.ACCELEROMETER_SERVICE:
-                    viewPager.setCurrentItem(PAGES.MOTION_DATA.getPageNumber());
-                    break;
+//                case Constants.NOTIFICATION_ID.ACCELEROMETER_SERVICE:
+//                    viewPager.setCurrentItem(PAGES.MOTION_DATA.getPageNumber());
+//                    break;
                 case Constants.NOTIFICATION_ID.AUDIO_SERVICE:
                     viewPager.setCurrentItem(PAGES.AUDIO_DATA.getPageNumber());
                     break;
