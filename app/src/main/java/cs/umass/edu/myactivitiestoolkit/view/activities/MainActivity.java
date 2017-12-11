@@ -28,12 +28,7 @@ import android.widget.TextView;
 import cs.umass.edu.myactivitiestoolkit.R;
 import cs.umass.edu.myactivitiestoolkit.constants.Constants;
 import cs.umass.edu.myactivitiestoolkit.util.PermissionsUtil;
-import cs.umass.edu.myactivitiestoolkit.view.fragments.AboutFragment;
-import cs.umass.edu.myactivitiestoolkit.view.fragments.AudioFragment;
-import cs.umass.edu.myactivitiestoolkit.view.fragments.ExerciseFragment;
-import cs.umass.edu.myactivitiestoolkit.view.fragments.HeartRateFragment;
-import cs.umass.edu.myactivitiestoolkit.view.fragments.LocationsFragment;
-import cs.umass.edu.myactivitiestoolkit.view.fragments.SettingsFragment;
+import cs.umass.edu.myactivitiestoolkit.view.fragments.*;
 
 /**
  * The main activity is the entry point for the application. It is the primary UI and allows
@@ -66,6 +61,35 @@ public class MainActivity extends AppCompatActivity {
      * If you wish to add another tab, e.g. for your final project, just follow the same setup.
      */
     public enum PAGES {
+        PHYSICAL_INFO(InfoFragment.class)  {
+            @Override
+            public String getTitle() { return "Physical Info"; }
+
+            @Override
+            public int getPageNumber() { return 0; }
+        },
+        JUMP_DATA(JumpFragment.class) {
+            @Override
+            public String getTitle() {
+                return "Jump Data";
+            }
+
+            @Override
+            public int getPageNumber() {
+                return 1;
+            }
+        },
+        THROW_DATA(ThrowFragment.class) {
+            @Override
+            public String getTitle() {
+                return "Throw Data";
+            }
+
+            @Override
+            public int getPageNumber() {
+                return 2;
+            }
+        },
         MOTION_DATA(ExerciseFragment.class) {
             @Override
             public String getTitle() {
@@ -74,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public int getPageNumber() {
-                return 0;
+                return 3;
             }
         },
         AUDIO_DATA(AudioFragment.class) {
@@ -85,52 +109,51 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public int getPageNumber() {
-                return 1;
-            }
-        },
-        PPG_DATA(HeartRateFragment.class) {
-            @Override
-            public String getTitle() {
-                return "My Heart";
-            }
-
-            @Override
-            public int getPageNumber() {
-                return 2;
-            }
-        },
-        LOCATION_DATA(LocationsFragment.class) {
-            @Override
-            public String getTitle() {
-                return "My Locations";
-            }
-
-            @Override
-            public int getPageNumber() {
-                return 3;
-            }
-        },
-        SETTINGS(SettingsFragment.class) {
-            @Override
-            public String getTitle() {
-                return "Settings";
-            }
-
-            @Override
-            public int getPageNumber() {
                 return 4;
             }
-        },
-        ABOUT(AboutFragment.class) {
-            @Override
-            public String getTitle() {
-                return "About";
-            }
-
-            @Override
-            public int getPageNumber() {
-                return 5;
-            }
+//        },
+//        PPG_DATA(HeartRateFragment.class) {
+//            @Override
+//            public String getTitle() {
+//                return "My Heart";
+//            }
+//            @Override
+//            public int getPageNumber() {
+//                return 3;
+//            }
+//        },
+//        LOCATION_DATA(LocationsFragment.class) {
+//            @Override
+//            public String getTitle() {
+//                return "My Locations";
+//            }
+//
+//            @Override
+//            public int getPageNumber() {
+//            return 4;
+//            }
+//        },
+//        SETTINGS(SettingsFragment.class) {
+//            @Override
+//            public String getTitle() {
+//            return "Settings";
+//            }
+//
+//            @Override
+//            public int getPageNumber() {
+//                return 4;
+//            }
+//        },
+//        ABOUT(AboutFragment.class) {
+//            @Override
+//            public String getTitle() {
+//                return "About";
+//            }
+//
+//            @Override
+//            public int getPageNumber() {
+//                return 5;
+//            }
         };
 
         /**
@@ -278,12 +301,13 @@ public class MainActivity extends AppCompatActivity {
                 case Constants.NOTIFICATION_ID.AUDIO_SERVICE:
                     viewPager.setCurrentItem(PAGES.AUDIO_DATA.getPageNumber());
                     break;
-                case Constants.NOTIFICATION_ID.LOCATION_SERVICE:
-                    viewPager.setCurrentItem(PAGES.LOCATION_DATA.getPageNumber());
-                    break;
-                case Constants.NOTIFICATION_ID.PPG_SERVICE:
-                    viewPager.setCurrentItem(PAGES.PPG_DATA.getPageNumber());
-                    break;
+//                case Constants.NOTIFICATION_ID.LOCATION_SERVICE:
+//                    viewPager.setCurrentItem(PAGES.LOCATION_DATA.getPageNumber());
+//                    break;
+//                case Constants.NOTIFICATION_ID.PPG_SERVICE:
+//                    viewPager.setCurrentItem(PAGES.PPG_DATA.getPageNumber());
+//                    break;
+
             }
         }
     }
