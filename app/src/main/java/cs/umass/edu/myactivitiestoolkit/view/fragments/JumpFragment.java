@@ -215,7 +215,7 @@ public class JumpFragment extends Fragment{
         txtServerStepCount = (TextView) view.findViewById(R.id.txtServerStepCount);
 
         //obtain reference to the activity text field
-        //txtActivity = (TextView) view.findViewById(R.id.txtActivity);
+        txtActivity = (TextView) view.findViewById(R.id.txtActivity);
 
         //obtain references to the on/off switches and handle the toggling appropriately
         switchAccelerometer = (Switch) view.findViewById(R.id.switchAccelerometer);

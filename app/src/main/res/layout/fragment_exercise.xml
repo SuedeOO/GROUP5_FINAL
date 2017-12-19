@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     *** ASSIGNMENTS: Data Collection, Step Detection, Activity Detection ***
-
     The exercise fragment will be used in the following assignments:
-
         Data Collection :       You will be required to update txtAccelerometerReading with
                                 the current accelerometer values.
-
         Step Detection :        You will be required to update txtAndroidStepCount with the
                                 step count computed by the Android built-in step detection
                                 algorithm; txtLocalStepCount with the step count computed by
                                 your local algorithm; and txtServerStepCount with the step
                                 count computed by your server-side step detection algorithm.
-
         Activity Detection :    You will be required to display the current activity in the
                                 exercise fragment. You may alternatively or additionally choose
                                 to display an icon corresponding to the current activity, as
                                 long as it is clear what the output of your algorithm is.
-
     You are not required to modify this file. You may make any changes to this file to suit
     your needs: You may customize your UI as little or as much as you please.
   -->
@@ -31,19 +26,21 @@
         android:id="@+id/switchAccelerometer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:gravity="center"
-        android:text="Spin Phone"
+        android:text="@string/text_switch_accelerometer"
         android:textSize="24sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txtAccelerometerReading"
-        android:layout_below="@id/switchAccelerometer"
-        android:text="@string/accelerometer_reading_initial"
-        android:textSize="20sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center" />
+        android:layout_below="@id/switchAccelerometer"
+        android:gravity="center"
+        android:textSize="20sp" />
 
     <LinearLayout
         android:id="@+id/layoutAccelerometer"
@@ -84,24 +81,32 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingStart="10dp"
-                    android:text="@string/local_step_count_initial"
                     android:textColor="@android:color/holo_blue_dark"
                     android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/txtServerStepCount"
-                    android:text="@string/server_step_count_initial"
-                    android:textSize="18sp"
-                    android:textColor="@android:color/holo_blue_dark"
-                    android:paddingLeft="10dp"
-                    android:paddingStart="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingEnd="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingStart="10dp"
+                    android:textColor="@android:color/holo_blue_dark"
+                    android:textSize="18sp" />
             </LinearLayout>
 
         </LinearLayout>
+        <TextView
+            android:id="@+id/txtActivity"
+            android:drawableStart="@drawable/ic_running_black_48dp"
+            android:text="@string/activity_initial"
+            android:textSize="20sp"
+            android:textColor="@android:color/holo_blue_dark"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center" />
     </LinearLayout>
 
 
@@ -112,30 +117,27 @@
         android:layout_width="match_parent">
 
         <LinearLayout
-            android:layout_width="194dp"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/spinn" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="196dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imageView5"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="502dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/spin" />
+                app:srcCompat="@drawable/heart" />
         </LinearLayout>
+
+        <com.androidplot.xy.XYPlot
+            style="@style/APDefacto.Light"
+            android:id="@+id/accelerometerPlot"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            ap:title="Accelerometer Signal"
+            ap:rangeTitle="m/s^2"
+            ap:lineLabels="left|bottom"
+            ap:lineLabelRotationBottom="-45"/>
     </LinearLayout>
 
 </RelativeLayout>
