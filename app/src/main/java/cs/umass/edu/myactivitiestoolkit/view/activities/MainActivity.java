@@ -90,17 +90,17 @@ public class MainActivity extends AppCompatActivity {
                 return 2;
             }
         },
-//        MOTION_DATA(ExerciseFragment.class) {
-//            @Override
-//            public String getTitle() {
-//                return "My Exercise";
-//            }
-//
-//            @Override
-//            public int getPageNumber() {
-//                return 3;
-//            }
-//        },
+        MOTION_DATA(ExerciseFragment.class) {
+            @Override
+            public String getTitle() {
+                return "My Exercise";
+            }
+
+            @Override
+            public int getPageNumber() {
+                return 3;
+            }
+        },
         AUDIO_DATA(AudioFragment.class) {
             @Override
             public String getTitle() {
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public int getPageNumber() {
-                return 3;
+                return 4;
             }
 //        },
 //        PPG_DATA(HeartRateFragment.class) {
