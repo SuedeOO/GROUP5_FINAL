@@ -31,8 +31,8 @@ public class Constants {
         String NAVIGATE_TO_APP = "edu.umass.cs.my-activities-toolkit.action.navigate-to-app";
         String BROADCAST_SPEAKER = "edu.umass.cs.my-activities-toolkit.action.broadcast-speaker";
         String BROADCAST_AVERAGE_ACCELERATION = "edu.umass.cs.my-activities-toolkit.action-broadcast-average-acceleration";
-        String BROADCAST_HIGHEST_JUMP = "edu.umass.cs.my-activities-toolkit.action-highest-jump";
-        String BROADCAST_LAST_JUMP = "edu.umass.cs.my-activities-toolkit.action-last-jump";
+        String BROADCAST_LAST_JUMP = "edu.umass.cs.my-activities-toolkit.action.broadcast-last-jump";
+        String BROADCAST_HIGHEST_JUMP = "edu.umass.cs.my-activities-toolkit.action.broadcast-highest-jump";
     }
 
     /**
@@ -40,6 +40,7 @@ public class Constants {
      */
     public interface NOTIFICATION_ID {
         int ACCELEROMETER_SERVICE = 101;
+        int JUMP_SERVICE = 106;
         int PPG_SERVICE = 102;
         int LOCATION_SERVICE = 103;
         int AUDIO_SERVICE = 104;
@@ -87,6 +88,12 @@ public class Constants {
         int BAND_SERVICE_STOPPED = 9;
         int GYROSCOPE_SERVICE_STARTED = 10;
         int GYROSCOPE_SERVICE_STOPPED = 11;
+
+    }
+
+    public interface PAGE{
+        String PAGE_ZERO = "edu.umass.cs.my-activities-toolkit.page.pageone";
+        String PAGE_ONE = "edu.umass.cs.my-activities-toolkit.page.pageone";
     }
 
     /** Error/warning messages displayed to the user TODO: put into string resources */

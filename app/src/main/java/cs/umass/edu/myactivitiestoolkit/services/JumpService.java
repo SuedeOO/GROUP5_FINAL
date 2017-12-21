@@ -27,7 +27,7 @@ import edu.umass.cs.MHLClient.sensors.AccelerometerReading;
  */
 
 public class JumpService extends SensorService implements  SensorEventListener{
-
+    private static final String TAG = JumpService.class.getName();
     private SensorManager mSensorManager;
     private Sensor mAccelerometerSensor;
     private final JumpDetector jumpDetector;
@@ -112,12 +112,12 @@ public class JumpService extends SensorService implements  SensorEventListener{
         }
         jumpDetector.registerOnJumpListener(new OnJumpListener() {
             @Override
-            public void onJumpUpdated(double distance) {
+            public void onJumpUpdated(int distance) {
                 broadcastlastJump(distance);
             }
 
             @Override
-            public void onHighestJumpUpdated(double distance) {
+            public void onHighestJumpUpdated(int distance) {
                 broadcasthighestJump(distance);
             }
         });

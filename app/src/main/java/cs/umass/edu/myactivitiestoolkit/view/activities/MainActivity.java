@@ -61,24 +61,24 @@ public class MainActivity extends AppCompatActivity {
      * If you wish to add another tab, e.g. for your final project, just follow the same setup.
      */
     public enum PAGES {
-        PHYSICAL_INFO(InfoFragment.class)  {
-            @Override
-            public String getTitle() { return "Physical Info"; }
-
-            @Override
-            public int getPageNumber() { return 0; }
-        },
+//        PHYSICAL_INFO(InfoFragment.class)  {
+//            @Override
+//            public String getTitle() { return "Physical Info"; }
+//
+//            @Override
+//            public int getPageNumber() { return 0; }
+//        },
         JUMP_DATA(JumpFragment.class) {
             @Override
             public String getTitle() {
-                return "Jump Data";
+                return "Jump!";
             }
 
             @Override
             public int getPageNumber() {
-                return 1;
+                return 0;
             }
-        },
+        };
 //        THROW_DATA(ThrowFragment.class) {
 //            @Override
 //            public String getTitle() {
@@ -87,30 +87,30 @@ public class MainActivity extends AppCompatActivity {
 //
 //            @Override
 //            public int getPageNumber() {
-//                return 2;
+//                return 0;
 //            }
 //        },
-        MOTION_DATA(ExerciseFragment.class) {
-            @Override
-            public String getTitle() {
-                return "My Exercise";
-            }
-
-            @Override
-            public int getPageNumber() {
-                return 2;
-            }
-        },
-        AUDIO_DATA(AudioFragment.class) {
-            @Override
-            public String getTitle() {
-                return "My Friends";
-            }
-
-            @Override
-            public int getPageNumber() {
-                return 3;
-            }
+//        MOTION_DATA(ExerciseFragment.class) {
+//            @Override
+//            public String getTitle() {
+//                return "Spin Phone";
+//            }
+//
+//            @Override
+//            public int getPageNumber() {
+//                return 1;
+//            }
+//        };
+//        AUDIO_DATA(AudioFragment.class) {
+//            @Override
+//            public String getTitle() {
+//                return "My Friends";
+//            }
+//
+//            @Override
+//            public int getPageNumber() {
+//                return 3;
+//            }
 //        },
 //        PPG_DATA(HeartRateFragment.class) {
 //            @Override
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 //            public int getPageNumber() {
 //                return 5;
 //            }
-        };
+//        };
 
         /**
          * Indicates the title of the page. This will be displayed in the tab.
@@ -295,12 +295,15 @@ public class MainActivity extends AppCompatActivity {
         if (getIntent() != null) {
             int notificationID = getIntent().getIntExtra(Constants.KEY.NOTIFICATION_ID, Constants.NOTIFICATION_ID.ACCELEROMETER_SERVICE);
             switch (notificationID){
-                case Constants.NOTIFICATION_ID.ACCELEROMETER_SERVICE:
-                    viewPager.setCurrentItem(PAGES.MOTION_DATA.getPageNumber());
-                    break;
-                case Constants.NOTIFICATION_ID.AUDIO_SERVICE:
-                    viewPager.setCurrentItem(PAGES.AUDIO_DATA.getPageNumber());
-                    break;
+//                case Constants.NOTIFICATION_ID.ACCELEROMETER_SERVICE:
+//                    viewPager.setCurrentItem(PAGES.JUMP_DATA.getPageNumber());
+//                    break;
+//                case Constants.NOTIFICATION_ID.JUMP_SERVICE:
+//                    viewPager.setCurrentItem(PAGES.JUMP_DATA.getPageNumber());
+//                    break;
+//                case Constants.NOTIFICATION_ID.AUDIO_SERVICE:
+//                    viewPager.setCurrentItem(PAGES.AUDIO_DATA.getPageNumber());
+//                    break;
 //                case Constants.NOTIFICATION_ID.LOCATION_SERVICE:
 //                    viewPager.setCurrentItem(PAGES.LOCATION_DATA.getPageNumber());
 //                    break;

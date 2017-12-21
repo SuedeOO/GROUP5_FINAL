@@ -43,6 +43,8 @@
     <string name="about_app_version">Version %s</string>
 
     <string name="text_switch_accelerometer">Spin Phone</string>
+    <string name="text_switch_jump_accelerometer">Jump High</string>
+
     <string name="text_switch_microphone">Microphone</string>
     <string name="text_switch_heart_rate">Photoplethysmography</string>
     <string name="text_switch_gps">Location</string>

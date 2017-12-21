@@ -5,6 +5,6 @@ package cs.umass.edu.myactivitiestoolkit.jump;
  */
 
 public interface OnJumpListener {
-    void onJumpUpdated(double distance);
-    void onHighestJumpUpdated(double distance);
+    void onJumpUpdated(int distance);
+    void onHighestJumpUpdated(int distance);
 }

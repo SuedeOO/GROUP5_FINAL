@@ -256,6 +256,8 @@ public class ExerciseFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean enabled) {
                 if (enabled){
+                    Intent intent = new Intent();
+                    intent.putExtra(Constants.PAGE.PAGE_ONE,0);
                     clearPlotData();
 
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());

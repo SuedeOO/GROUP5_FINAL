@@ -126,6 +126,7 @@ public class StepDetector implements SensorEventListener {
      */
     @Override
     public void onSensorChanged(SensorEvent event) {
+        System.out.println("step?");
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             double[] filteredValues = mFilter.getFilteredValues(event.values);
             long timestamp_in_milliseconds = (long) ((double) event.timestamp / Constants.TIMESTAMPS.NANOSECONDS_PER_MILLISECOND);

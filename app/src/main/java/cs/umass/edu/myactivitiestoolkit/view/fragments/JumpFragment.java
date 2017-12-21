@@ -47,7 +47,7 @@ public class JumpFragment extends Fragment {
     /**
      * The switch which toggles the {@link AccelerometerService}.
      **/
-    private Switch switchAccelerometer;
+    public Switch jumpAccelerometer;
     private TextView txtHighestJump;
     private TextView txtLastJump;
     private ServiceManager serviceManager;
@@ -60,19 +60,24 @@ public class JumpFragment extends Fragment {
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+           // System.out.println("looooook at me");
             if (intent.getAction() != null) {
+                //System.out.println("looook not null");
                 if (intent.getAction().equals(Constants.ACTION.BROADCAST_MESSAGE)) {
+                    //System.out.println("??");
                     int message = intent.getIntExtra(Constants.KEY.MESSAGE, -1);
                     if (message == Constants.MESSAGE.ACCELEROMETER_SERVICE_STOPPED) {
-                        switchAccelerometer.setChecked(false);
+                        jumpAccelerometer.setChecked(false);
                     } else if (message == Constants.MESSAGE.BAND_SERVICE_STOPPED) {
-                        switchAccelerometer.setChecked(false);
+                        jumpAccelerometer.setChecked(false);
                     }
                 } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_LAST_JUMP)) {
-                    double distance = intent.getIntExtra(Constants.KEY.LAST_JUMP, 0);
+                    //System.out.println("last");
+                    int distance = intent.getIntExtra(Constants.KEY.LAST_JUMP, 0);
                     displayLastJump(distance);
                 } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_HIGHEST_JUMP)) {
-                    double distance = intent.getIntExtra(Constants.KEY.HIGHEST_JUMP, 0);
+                    //System.out.println("highest");
+                    int distance = intent.getIntExtra(Constants.KEY.HIGHEST_JUMP, 0);
                     displayHighestJump(distance);
                 }
             }
@@ -91,12 +96,16 @@ public class JumpFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_jump, container, false);
         txtHighestJump = (TextView) view.findViewById(R.id.txtHighestJump);
         txtLastJump = (TextView) view.findViewById(R.id.txtLastJump);
-        switchAccelerometer = (Switch) view.findViewById(R.id.switchAccelerometer);
-        switchAccelerometer.setChecked(serviceManager.isServiceRunning(AccelerometerService.class));
-        switchAccelerometer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        jumpAccelerometer = (Switch) view.findViewById(R.id.jumpAccelerometer);
+        jumpAccelerometer.setChecked(serviceManager.isServiceRunning(AccelerometerService.class));
+        jumpAccelerometer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean enabled) {
                 if (enabled) {
+                    Intent intent = new Intent();
+                    intent.putExtra(Constants.PAGE.PAGE_ZERO,0);
+                    //System.out.println("Enabled!!!!");
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     boolean runOverMSBand = preferences.getBoolean(getString(R.string.pref_msband_key),
                             getResources().getBoolean(R.bool.pref_msband_default));
@@ -117,7 +126,7 @@ public class JumpFragment extends Fragment {
         return view;
     }
 
-    private void displayLastJump(final double jump) {
+    private void displayLastJump(final int jump) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -127,7 +136,7 @@ public class JumpFragment extends Fragment {
     }
 
 
-    private void displayHighestJump(final double jump) {
+    private void displayHighestJump(final int jump) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -142,7 +151,8 @@ public class JumpFragment extends Fragment {
 
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
         IntentFilter filter = new IntentFilter();
-        //filter.addAction(Constants.ACTION.BROADCAST_MESSAGE);
+        filter.addAction(Constants.ACTION.BROADCAST_MESSAGE);
+        filter.addAction(Constants.ACTION.BROADCAST_AVERAGE_ACCELERATION);
         filter.addAction(Constants.ACTION.BROADCAST_HIGHEST_JUMP);
         filter.addAction(Constants.ACTION.BROADCAST_LAST_JUMP);
         broadcastManager.registerReceiver(receiver, filter);

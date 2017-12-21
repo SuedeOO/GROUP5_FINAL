@@ -8,6 +8,7 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -15,14 +16,18 @@ import org.json.JSONObject;
 
 import cs.umass.edu.myactivitiestoolkit.R;
 import cs.umass.edu.myactivitiestoolkit.communication.MHLClientFilter;
+import cs.umass.edu.myactivitiestoolkit.jump.JumpDetector;
 import cs.umass.edu.myactivitiestoolkit.processing.Filter;
 import cs.umass.edu.myactivitiestoolkit.steps.OnStepListener;
+import cs.umass.edu.myactivitiestoolkit.jump.JumpDetector;
+import cs.umass.edu.myactivitiestoolkit.jump.OnJumpListener;
 import cs.umass.edu.myactivitiestoolkit.constants.Constants;
 import cs.umass.edu.myactivitiestoolkit.steps.StepDetector;
 import edu.umass.cs.MHLClient.client.MessageReceiver;
 import edu.umass.cs.MHLClient.client.MobileIOClient;
 import edu.umass.cs.MHLClient.sensors.AccelerometerReading;
-
+import cs.umass.edu.myactivitiestoolkit.view.activities.MainActivity;
+import cs.umass.edu.myactivitiestoolkit.view.fragments.JumpFragment;
 /**
  * This service is responsible for collecting the accelerometer data on
  * the phone. It is an ongoing foreground service that will run even when your
@@ -97,7 +102,7 @@ public class AccelerometerService extends SensorService implements SensorEventLi
 
     /** Defines your step detection algorithm. **/
     private final StepDetector stepDetector;
-
+    private final JumpDetector jumpDetector;
     /**
      * The step count as predicted by the Android built-in step detection algorithm.
      */
@@ -109,12 +114,13 @@ public class AccelerometerService extends SensorService implements SensorEventLi
     private int serverStepCount = 0;
 
     private Filter filter; // <SOLUTION/ A1>
-
     public AccelerometerService(){
         //<SOLUTION A1>
         filter = new Filter(3);
         //</SOLUTION A1>
         stepDetector = new StepDetector();
+        jumpDetector = new JumpDetector();
+
     }
 
     @Override
@@ -230,7 +236,27 @@ public class AccelerometerService extends SensorService implements SensorEventLi
             }
         });
 
-        mSensorManager.registerListener(stepDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+        jumpDetector.registerOnJumpListener(new OnJumpListener() {
+            @Override
+            public void onJumpUpdated(int distance) {
+                broadcastlastJump(distance);
+            }
+
+            @Override
+            public void onHighestJumpUpdated(int distance) {
+                broadcasthighestJump(distance);
+            }
+        });
+
+        mSensorManager.registerListener(jumpDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+        //mSensorManager.registerListener(stepDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+
+//        Intent intent = new Intent();
+//        if(intent.getIntExtra(Constants.PAGE.PAGE_ZERO,-1)==0){
+//            mSensorManager.registerListener(jumpDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+//        }else if(intent.getIntExtra(Constants.PAGE.PAGE_ONE,-1) ==0){
+//            mSensorManager.registerListener(stepDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+//        }
         //</SOLUTION A1>
     }
 
@@ -241,9 +267,12 @@ public class AccelerometerService extends SensorService implements SensorEventLi
     protected void unregisterSensors() {
         // TODO : Unregister sensors
         //<SOLUTION A0/A1>
+
         if (mSensorManager != null) {
             mSensorManager.unregisterListener(this, mAccelerometerSensor);
-            mSensorManager.unregisterListener(stepDetector, mAccelerometerSensor);
+            mSensorManager.unregisterListener(jumpDetector, mAccelerometerSensor);
+           // mSensorManager.unregisterListener(stepDetector, mAccelerometerSensor);
+
             mSensorManager.unregisterListener(this, mStepSensor);
         }
         //</SOLUTION A0/A1>
@@ -369,6 +398,21 @@ public class AccelerometerService extends SensorService implements SensorEventLi
         Intent intent = new Intent();
         intent.putExtra(Constants.KEY.AVERAGE_ACCELERATION, new float[]{average_X, average_Y, average_Z});
         intent.setAction(Constants.ACTION.BROADCAST_AVERAGE_ACCELERATION);
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+        manager.sendBroadcast(intent);
+    }
+
+    public void broadcastlastJump(int distance){
+        Intent intent = new Intent();
+        intent.putExtra(Constants.KEY.LAST_JUMP, distance);
+        intent.setAction(Constants.ACTION.BROADCAST_LAST_JUMP);
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+        manager.sendBroadcast(intent);
+    }
+    public void broadcasthighestJump(int distance){
+        Intent intent = new Intent();
+        intent.putExtra(Constants.KEY.HIGHEST_JUMP, distance);
+        intent.setAction(Constants.ACTION.BROADCAST_HIGHEST_JUMP);
         LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
         manager.sendBroadcast(intent);
     }
