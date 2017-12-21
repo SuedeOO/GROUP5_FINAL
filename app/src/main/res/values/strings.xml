@@ -44,6 +44,7 @@
 
     <string name="text_switch_accelerometer">Spin Phone</string>
     <string name="text_switch_jump_accelerometer">Jump High</string>
+    <string name="text_switch_throw_accelerometer">Throw Far</string>
 
     <string name="text_switch_microphone">Microphone</string>
     <string name="text_switch_heart_rate">Photoplethysmography</string>
