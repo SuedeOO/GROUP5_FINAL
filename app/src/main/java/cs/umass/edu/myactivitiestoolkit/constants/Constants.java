@@ -31,6 +31,8 @@ public class Constants {
         String NAVIGATE_TO_APP = "edu.umass.cs.my-activities-toolkit.action.navigate-to-app";
         String BROADCAST_SPEAKER = "edu.umass.cs.my-activities-toolkit.action.broadcast-speaker";
         String BROADCAST_AVERAGE_ACCELERATION = "edu.umass.cs.my-activities-toolkit.action-broadcast-average-acceleration";
+        String BROADCAST_HIGHEST_JUMP = "edu.umass.cs.my-activities-toolkit.action-highest-jump";
+        String BROADCAST_LAST_JUMP = "edu.umass.cs.my-activities-toolkit.action-last-jump";
     }
 
     /**
@@ -65,6 +67,8 @@ public class Constants {
         String GYROSCOPE_PEAK_VALUE = "edu.umass.cs.my-activities-toolkit.key.gyroscope-peak-value";
         String NOTIFICATION_ID = "edu.umass.cs.my-activities-toolkit.key.sensor-service-type";
         String AVERAGE_ACCELERATION = "edu.umass.cs.my-activities-toolkit.key.average-acceleration";
+        String HIGHEST_JUMP = "edu.umass.cs.my-activities-toolkit.key.highest-jump";
+        String LAST_JUMP = "edu.umass.cs.my-activities-toolkit.key.last-jump";
     }
 
     /**

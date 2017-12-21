@@ -134,14 +134,17 @@ public class JumpFragment extends Fragment{
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction() != null) {
-                if (intent.getAction().equals(Constants.ACTION.BROADCAST_MESSAGE)) {
+                if (intent.getAction().equals(Constants.ACTION.BROADCAST_MESSAGE))
+                {
                     int message = intent.getIntExtra(Constants.KEY.MESSAGE, -1);
                     if (message == Constants.MESSAGE.ACCELEROMETER_SERVICE_STOPPED){
                         switchAccelerometer.setChecked(false);
                     } else if (message == Constants.MESSAGE.BAND_SERVICE_STOPPED){
                         switchAccelerometer.setChecked(false);
                     }
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ACCELEROMETER_DATA)) {
+                }
+                else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ACCELEROMETER_DATA))
+                {
                     long timestamp = intent.getLongExtra(Constants.KEY.TIMESTAMP, -1);
                     float[] accelerometerValues = intent.getFloatArrayExtra(Constants.KEY.ACCELEROMETER_DATA);
 //                    displayAccelerometerReading(accelerometerValues[0], accelerometerValues[1], accelerometerValues[2]);
@@ -150,12 +153,14 @@ public class JumpFragment extends Fragment{
                     xValues.add(accelerometerValues[0]);
                     yValues.add(accelerometerValues[1]);
                     zValues.add(accelerometerValues[2]);
-                    if (numberOfPoints >= GRAPH_CAPACITY) {
+                    if (numberOfPoints >= GRAPH_CAPACITY)
+                    {
                         timestamps.poll();
                         xValues.poll();
                         yValues.poll();
                         zValues.poll();
-                        while (peakTimestamps.size() > 0 && (peakTimestamps.peek().longValue() < timestamps.peek().longValue())){
+                        while (peakTimestamps.size() > 0 && (peakTimestamps.peek().longValue() < timestamps.peek().longValue()))
+                        {
                             peakTimestamps.poll();
                             peakValues.poll();
                         }
@@ -173,6 +178,12 @@ public class JumpFragment extends Fragment{
                 } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_SERVER_STEP_COUNT)) {
                     int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
                     displayServerStepCount(stepCount);
+                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_HIGHEST_JUMP)) {
+                    int jumpHeight = intent.getIntExtra(Constants.KEY.HIGHEST_JUMP,  0);
+                    displayHighestJump(jumpHeight);
+                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_LAST_JUMP)) {
+                    int jumpHeight = intent.getIntExtra(Constants.KEY.LAST_JUMP,  0);
+                    displayLastJump(jumpHeight);
                 } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ACTIVITY)) {
                     String activity = intent.getStringExtra(Constants.KEY.ACTIVITY);
                     Log.d(TAG, "Received activity : " + activity);
@@ -348,26 +359,26 @@ public class JumpFragment extends Fragment{
 
     /**
      * Displays the step count as computed by your local step detection algorithm.
-     * @param stepCount the number of steps taken since the service started
+     * @param jump the number of steps taken since the service started
      */
-    private void displayLastJump(final int stepCount){
+    private void displayLastJump(final int jump){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                txtLocalStepCount.setText(String.format(Locale.getDefault(), getString(R.string.last_jump), stepCount));
+                txtLocalStepCount.setText(String.format(Locale.getDefault(), getString(R.string.last_jump), jump));
             }
         });
     }
 
     /**
      * Displays the step count as computed by the Android built-in step detection algorithm.
-     * @param stepCount the number of steps taken since the service started
+     * @param jump the number of steps taken since the service started
      */
-    private void displayHighestJump(final int stepCount){
+    private void displayHighestJump(final int jump){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                txtAndroidStepCount.setText(String.format(Locale.getDefault(), getString(R.string.highest_jump), stepCount));
+                txtAndroidStepCount.setText(String.format(Locale.getDefault(), getString(R.string.highest_jump), jump));
             }
         });
     }
