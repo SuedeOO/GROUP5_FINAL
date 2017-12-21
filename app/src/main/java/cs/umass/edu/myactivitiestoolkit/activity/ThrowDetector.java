@@ -24,6 +24,7 @@ public class ThrowDetector implements SensorEventListener {
     private int bestThrow;
     private int count;
     private double sum;
+    private int window_size;
     public ThrowDetector(){
         mFilter = new Filter(3);
         mThrowListeners = new ArrayList<>();
@@ -33,6 +34,7 @@ public class ThrowDetector implements SensorEventListener {
         count = 0;
         previous = 9.8;
         sum = 0;
+        window_size= 0;
     }
 
     public void registerOnJumpListener(final OnThrowListener throwListener){
@@ -50,22 +52,28 @@ public class ThrowDetector implements SensorEventListener {
     public void onSensorChanged(SensorEvent sensorEvent) {
         //System.out.println("here");
         if(sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            double[] xyz = mFilter.getFilteredValues(sensorEvent.values);
-            double magnitude = Math.sqrt(Math.pow(xyz[0], 2) + Math.pow(xyz[1], 2) + Math.pow(xyz[2], 2));
-            //magnitude = xyz[0];
-            //System.out.println(magnitude);
-            if(magnitude - previous > 1){
-                sum += magnitude;
-                count++;
-                previous = magnitude;
-            }
-            if(magnitude - previous < -1 && count > 5){
-                sum = sum /count;
-                detectTrow(count*0.02, sum*3);
-               System.out.println(count + "times");
+            if(window_size < 30){
+                double[] xyz = mFilter.getFilteredValues(sensorEvent.values);
+                double magnitude = Math.sqrt(Math.pow(xyz[0], 2) + Math.pow(xyz[1], 2) + Math.pow(xyz[2], 2));
+                //magnitude = xyz[0];
+                //System.out.println(magnitude);
+                if (magnitude - previous > 1) {
+                    sum += magnitude;
+                    count++;
+                    previous = magnitude;
+                }
+                if (magnitude - previous < -1 && count > 5) {
+                    sum = sum / count;
+                    detectTrow(count * 0.02, sum * 3);
+                    System.out.println(count + "times");
+                    count = 0;
+                }
+                window_size ++;
+            }else{
                 count = 0;
-                sum =0;
-                previous =9.8;
+                sum = 0;
+                previous = 9.8;
+                window_size = 0;
             }
         }
 

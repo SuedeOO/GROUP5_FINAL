@@ -88,7 +88,7 @@ public class ThrowFragment extends Fragment {
         txtBestThrow = (TextView) view.findViewById(R.id.txtBestThrow);
         txtLastThrow = (TextView) view.findViewById(R.id.txtLastThrow);
 
-        throwSwitch = (Switch) view.findViewById(R.id.throwSwitch);
+        throwSwitch = (Switch) view.findViewById(R.id.throwSwtich);
         throwSwitch.setChecked(serviceManager.isServiceRunning(AccelerometerService.class));
         throwSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

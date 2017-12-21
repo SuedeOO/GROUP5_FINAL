@@ -46,19 +46,19 @@
         android:layout_centerHorizontal="true"
         tools:ignore="ContentDescription" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/imgSpectrogram"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="72dp">
+    <!--<FrameLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_alignBottom="@+id/imgSpectrogram"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_marginBottom="72dp">-->
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/facebook_login" />
-    </FrameLayout>
+        <!--<ImageView-->
+            <!--android:id="@+id/imageView2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:srcCompat="@drawable/facebook_login" />-->
+    <!--</FrameLayout>-->
 
 </RelativeLayout>
