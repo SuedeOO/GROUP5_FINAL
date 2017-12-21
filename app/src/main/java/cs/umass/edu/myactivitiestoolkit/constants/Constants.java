@@ -34,7 +34,9 @@ public class Constants {
         String BROADCAST_LAST_JUMP = "edu.umass.cs.my-activities-toolkit.action.broadcast-last-jump";
         String BROADCAST_HIGHEST_JUMP = "edu.umass.cs.my-activities-toolkit.action.broadcast-highest-jump";
         String BROADCAST_LAST_THROW = "edu.umass.cs.my-activities-toolkit.action.broadcast-last-throw";
-        String BROADCAST_FURTHEST_THROW = "edu.umass.cs.my-activities-toolkit.action.broadcast-furthest-throw";
+        String BROADCAST_BEST_THROW = "edu.umass.cs.my-activities-toolkit.action.broadcast-best-throw";
+
+
     }
 
     /**
@@ -72,8 +74,9 @@ public class Constants {
         String AVERAGE_ACCELERATION = "edu.umass.cs.my-activities-toolkit.key.average-acceleration";
         String HIGHEST_JUMP = "edu.umass.cs.my-activities-toolkit.key.highest-jump";
         String LAST_JUMP = "edu.umass.cs.my-activities-toolkit.key.last-jump";
-        String FURTHEST_THROW = "edu.umass.cs.my-activities-toolkit.key.highest-jump";
-        String LAST_THROW = "edu.umass.cs.my-activities-toolkit.key.last-jump";
+        String BEST_THROW = "edu.umass.cs.my-activities-toolkit.key.best-throw";
+        String LAST_THROW = "edu.umass.cs.my-activities-toolkit.key.last-throw";
+
     }
 
     /**

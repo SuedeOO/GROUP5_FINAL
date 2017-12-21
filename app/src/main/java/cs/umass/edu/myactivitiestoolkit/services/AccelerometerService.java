@@ -8,26 +8,25 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import cs.umass.edu.myactivitiestoolkit.R;
+import cs.umass.edu.myactivitiestoolkit.activity.OnThrowListener;
+import cs.umass.edu.myactivitiestoolkit.activity.ThrowDetector;
 import cs.umass.edu.myactivitiestoolkit.communication.MHLClientFilter;
-import cs.umass.edu.myactivitiestoolkit.jump.JumpDetector;
+import cs.umass.edu.myactivitiestoolkit.activity.JumpDetector;
 import cs.umass.edu.myactivitiestoolkit.processing.Filter;
 import cs.umass.edu.myactivitiestoolkit.steps.OnStepListener;
-import cs.umass.edu.myactivitiestoolkit.jump.JumpDetector;
-import cs.umass.edu.myactivitiestoolkit.jump.OnJumpListener;
+import cs.umass.edu.myactivitiestoolkit.activity.OnJumpListener;
 import cs.umass.edu.myactivitiestoolkit.constants.Constants;
 import cs.umass.edu.myactivitiestoolkit.steps.StepDetector;
 import edu.umass.cs.MHLClient.client.MessageReceiver;
 import edu.umass.cs.MHLClient.client.MobileIOClient;
 import edu.umass.cs.MHLClient.sensors.AccelerometerReading;
-import cs.umass.edu.myactivitiestoolkit.view.activities.MainActivity;
-import cs.umass.edu.myactivitiestoolkit.view.fragments.JumpFragment;
+
 /**
  * This service is responsible for collecting the accelerometer data on
  * the phone. It is an ongoing foreground service that will run even when your
@@ -103,6 +102,7 @@ public class AccelerometerService extends SensorService implements SensorEventLi
     /** Defines your step detection algorithm. **/
     private final StepDetector stepDetector;
     private final JumpDetector jumpDetector;
+    private final ThrowDetector throwDetector;
     /**
      * The step count as predicted by the Android built-in step detection algorithm.
      */
@@ -120,6 +120,7 @@ public class AccelerometerService extends SensorService implements SensorEventLi
         //</SOLUTION A1>
         stepDetector = new StepDetector();
         jumpDetector = new JumpDetector();
+        throwDetector = new ThrowDetector();
 
     }
 
@@ -248,8 +249,20 @@ public class AccelerometerService extends SensorService implements SensorEventLi
             }
         });
 
-        mSensorManager.registerListener(jumpDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+        throwDetector.registerOnJumpListener(new OnThrowListener() {
+            @Override
+            public void OnThrowUpadated(int distance) {
+                broadcastlastThrow(distance);
+            }
+
+            @Override
+            public void OnBestThrow(int distance) {
+                broadcastbestThrow(distance);
+            }
+        });
+        //mSensorManager.registerListener(jumpDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
         //mSensorManager.registerListener(stepDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+        mSensorManager.registerListener(throwDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
 
 //        Intent intent = new Intent();
 //        if(intent.getIntExtra(Constants.PAGE.PAGE_ZERO,-1)==0){
@@ -270,7 +283,7 @@ public class AccelerometerService extends SensorService implements SensorEventLi
 
         if (mSensorManager != null) {
             mSensorManager.unregisterListener(this, mAccelerometerSensor);
-            mSensorManager.unregisterListener(jumpDetector, mAccelerometerSensor);
+            mSensorManager.unregisterListener(throwDetector, mAccelerometerSensor);
            // mSensorManager.unregisterListener(stepDetector, mAccelerometerSensor);
 
             mSensorManager.unregisterListener(this, mStepSensor);
@@ -417,5 +430,20 @@ public class AccelerometerService extends SensorService implements SensorEventLi
         manager.sendBroadcast(intent);
     }
 
+    public void broadcastlastThrow(int distance){
+        Intent intent = new Intent();
+        intent.putExtra(Constants.KEY.LAST_THROW, distance);
+        intent.setAction(Constants.ACTION.BROADCAST_LAST_THROW);
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+        manager.sendBroadcast(intent);
+    }
+
+    public void broadcastbestThrow(int distance){
+        Intent intent = new Intent();
+        intent.putExtra(Constants.KEY.BEST_THROW, distance);
+        intent.setAction(Constants.ACTION.BROADCAST_BEST_THROW);
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+        manager.sendBroadcast(intent);
+    }
 
 }

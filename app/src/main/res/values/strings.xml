@@ -44,7 +44,6 @@
 
     <string name="text_switch_accelerometer">Spin Phone</string>
     <string name="text_switch_jump_accelerometer">Jump High</string>
-    <string name="text_switch_throw_accelerometer">Throw Far</string>
 
     <string name="text_switch_microphone">Microphone</string>
     <string name="text_switch_heart_rate">Photoplethysmography</string>
@@ -57,10 +56,11 @@
     <string name="last_jump_initial">Last Jump: 0</string>
 
     <string name="last_throw" formatted="false">Last Throw: %d</string>
-    <string name="furthest_throw" formatted="false">Furthest Throw: %d</string>
+    <string name="best_throw" formatted="false">Best Throw: %d</string>
 
+    <string name="best_throw_initial">Best Throw: 0</string>
     <string name="last_throw_initial">Last Throw: 0</string>
-    <string name="furthest_throw_initial">Furthest Throw: 0</string>
+    <string name="throw_far">SHOT PUT!</string>
 
     <string name="app_details">CS390MB : Mobile Health Sensing</string>
 </resources>

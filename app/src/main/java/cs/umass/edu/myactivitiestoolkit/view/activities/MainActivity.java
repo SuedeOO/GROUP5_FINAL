@@ -68,39 +68,51 @@ public class MainActivity extends AppCompatActivity {
 //            @Override
 //            public int getPageNumber() { return 0; }
 //        },
-        JUMP_DATA(JumpFragment.class) {
+//        JUMP_DATA(JumpFragment.class) {
+//            @Override
+//            public String getTitle() {
+//                return "Jump!";
+//            }
+//
+//            @Override
+//            public int getPageNumber() {
+//                return 0;
+//            }
+//        };
+        THROW_DATA(ThrowFragment.class) {
             @Override
             public String getTitle() {
-                return "Jump Data";
+                return "SHOTPUT!";
             }
 
             @Override
             public int getPageNumber() {
                 return 0;
             }
-        },
-        THROW_DATA(ThrowFragment.class) {
-            @Override
-            public String getTitle() {
-                return "Throw Data";
-            }
+        };
 
-            @Override
-            public int getPageNumber() {
-                return 1;
-            }
-        },
-        MOTION_DATA(ExerciseFragment.class) {
-            @Override
-            public String getTitle() {
-                return "My Exercise";
-            }
-
-            @Override
-            public int getPageNumber() {
-                return 2;
-            }
+//        THROW_DATA(ThrowFragment.class) {
+//            @Override
+//            public String getTitle() {
+//                return "Throw Data";
+//            }
+//
+//            @Override
+//            public int getPageNumber() {
+//                return 0;
+//            }
 //        },
+//        MOTION_DATA(ExerciseFragment.class) {
+//            @Override
+//            public String getTitle() {
+//                return "Spin Phone";
+//            }
+//
+//            @Override
+//            public int getPageNumber() {
+//                return 1;
+//            }
+//        };
 //        AUDIO_DATA(AudioFragment.class) {
 //            @Override
 //            public String getTitle() {
@@ -109,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //            @Override
 //            public int getPageNumber() {
-//                return 4;
+//                return 3;
 //            }
 //        },
 //        PPG_DATA(HeartRateFragment.class) {
@@ -154,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
 //            public int getPageNumber() {
 //                return 5;
 //            }
-        };
+//        };
 
         /**
          * Indicates the title of the page. This will be displayed in the tab.
@@ -296,7 +308,10 @@ public class MainActivity extends AppCompatActivity {
             int notificationID = getIntent().getIntExtra(Constants.KEY.NOTIFICATION_ID, Constants.NOTIFICATION_ID.ACCELEROMETER_SERVICE);
             switch (notificationID){
 //                case Constants.NOTIFICATION_ID.ACCELEROMETER_SERVICE:
-//                    viewPager.setCurrentItem(PAGES.MOTION_DATA.getPageNumber());
+//                    viewPager.setCurrentItem(PAGES.JUMP_DATA.getPageNumber());
+//                    break;
+//                case Constants.NOTIFICATION_ID.JUMP_SERVICE:
+//                    viewPager.setCurrentItem(PAGES.JUMP_DATA.getPageNumber());
 //                    break;
 //                case Constants.NOTIFICATION_ID.AUDIO_SERVICE:
 //                    viewPager.setCurrentItem(PAGES.AUDIO_DATA.getPageNumber());
