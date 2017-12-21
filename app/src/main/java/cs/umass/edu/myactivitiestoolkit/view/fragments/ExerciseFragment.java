@@ -173,29 +173,6 @@ public class ExerciseFragment extends Fragment {
                     } else if (message == Constants.MESSAGE.BAND_SERVICE_STOPPED){
                         switchAccelerometer.setChecked(false);
                     }
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ACCELEROMETER_DATA)) {
-                    long timestamp = intent.getLongExtra(Constants.KEY.TIMESTAMP, -1);
-                    float[] accelerometerValues = intent.getFloatArrayExtra(Constants.KEY.ACCELEROMETER_DATA);
-//                    displayAccelerometerReading(accelerometerValues[0], accelerometerValues[1], accelerometerValues[2]);
-
-                    timestamps.add(timestamp);
-                    xValues.add(accelerometerValues[0]);
-                    yValues.add(accelerometerValues[1]);
-                    zValues.add(accelerometerValues[2]);
-                    if (numberOfPoints >= GRAPH_CAPACITY) {
-                        timestamps.poll();
-                        xValues.poll();
-                        yValues.poll();
-                        zValues.poll();
-                        while (peakTimestamps.size() > 0 && (peakTimestamps.peek().longValue() < timestamps.peek().longValue())){
-                            peakTimestamps.poll();
-                            peakValues.poll();
-                        }
-                    }
-                    else
-                        numberOfPoints++;
-
-                    updatePlot();
                 } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ANDROID_STEP_COUNT)) {
                     int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
                     displayAndroidStepCount(stepCount);
@@ -209,19 +186,6 @@ public class ExerciseFragment extends Fragment {
                     String activity = intent.getStringExtra(Constants.KEY.ACTIVITY);
                     Log.d(TAG, "Received activity : " + activity);
                     displayActivity(activity);
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_AVERAGE_ACCELERATION)) {
-                    float[] average_acceleration = intent.getFloatArrayExtra(Constants.KEY.AVERAGE_ACCELERATION);
-                    displayAccelerometerReading(average_acceleration[0], average_acceleration[1], average_acceleration[2]);
-                    String output = String.format(Locale.getDefault(), "The average acceleration is (%f,%f,%f).", average_acceleration[0], average_acceleration[1], average_acceleration[2]);
-                    Toast.makeText(getActivity().getApplicationContext(), output, Toast.LENGTH_LONG).show();
-                    Log.d(TAG, output);
-                }else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ACCELEROMETER_PEAK)){
-                    long timestamp = intent.getLongExtra(Constants.KEY.ACCELEROMETER_PEAK_TIMESTAMP, -1);
-                    float[] values = intent.getFloatArrayExtra(Constants.KEY.ACCELEROMETER_PEAK_VALUE);
-                    if (timestamp > 0) {
-                        peakTimestamps.add(timestamp);
-                        peakValues.add(values[2]); //place on z-axis signal
-                    }
                 }
             }
         }
@@ -340,10 +304,7 @@ public class ExerciseFragment extends Fragment {
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constants.ACTION.BROADCAST_MESSAGE);
-        filter.addAction(Constants.ACTION.BROADCAST_AVERAGE_ACCELERATION);
         filter.addAction(Constants.ACTION.BROADCAST_ACTIVITY);
-        filter.addAction(Constants.ACTION.BROADCAST_ACCELEROMETER_DATA);
-        filter.addAction(Constants.ACTION.BROADCAST_ACCELEROMETER_PEAK);
         filter.addAction(Constants.ACTION.BROADCAST_ANDROID_STEP_COUNT);
         filter.addAction(Constants.ACTION.BROADCAST_LOCAL_STEP_COUNT);
         filter.addAction(Constants.ACTION.BROADCAST_SERVER_STEP_COUNT);
