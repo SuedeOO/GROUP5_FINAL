@@ -6,14 +6,14 @@
     android:layout_height="match_parent" android:background="@color/background_steps">
 
     <Switch
-        android:id="@+id/throwAccelerometer"
+        android:id="@+id/throwSwtich"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="center"
-        android:text="@string/text_switch_throw_accelerometer"
+        android:text="@string/throw_far"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -48,27 +48,28 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/throwAccelerometer"
+        android:layout_below="@+id/throwSwtich"
         android:layout_marginLeft="41dp"
         android:layout_marginStart="41dp"
         android:layout_marginTop="29dp"
         android:text="@string/last_throw_initial" />
 
     <TextView
-        android:id="@+id/txtFurthestThrow"
+        android:id="@+id/txtBestThrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtLastThrow"
         android:layout_alignBottom="@+id/txtLastThrow"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:text="@string/furthest_throw_initial" />
+        android:layout_marginLeft="28dp"
+        android:layout_marginStart="28dp"
+        android:layout_toEndOf="@+id/txtLastThrow"
+        android:layout_toRightOf="@+id/txtLastThrow"
+        android:text="@string/best_throw_initial" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/txtFurthestThrow"
+        android:layout_below="@+id/txtBestThrow"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:orientation="vertical">
