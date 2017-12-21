@@ -26,8 +26,8 @@ import cs.umass.edu.myactivitiestoolkit.R;
 import cs.umass.edu.myactivitiestoolkit.communication.MHLClientFilter;
 import cs.umass.edu.myactivitiestoolkit.constants.Constants;
 import cs.umass.edu.myactivitiestoolkit.services.SensorService;
-import cs.umass.edu.myactivitiestoolkit.steps.OnStepListener;
-import cs.umass.edu.myactivitiestoolkit.steps.ActionDetector;
+import cs.umass.edu.myactivitiestoolkit.steps.OnActionListener;
+import cs.umass.edu.myactivitiestoolkit.steps.StepDetector;
 import edu.umass.cs.MHLClient.client.MessageReceiver;
 import edu.umass.cs.MHLClient.sensors.AccelerometerReading;
 import edu.umass.cs.MHLClient.sensors.GyroscopeReading;
@@ -54,7 +54,7 @@ public class BandService extends SensorService implements BandGyroscopeEventList
     /** The object which receives sensor data from the Microsoft Band */
     private BandClient bandClient = null;
 
-    private ActionDetector actionDetector;
+    private StepDetector stepDetector;
 
     /**
      * The step count as predicted by your server-side step detection algorithm.
@@ -62,7 +62,7 @@ public class BandService extends SensorService implements BandGyroscopeEventList
     private int serverStepCount = 0;
 
     public BandService(){
-        actionDetector = new ActionDetector();
+        stepDetector = new StepDetector();
     }
 
     @Override
@@ -191,14 +191,14 @@ public class BandService extends SensorService implements BandGyroscopeEventList
     @Override
     protected void registerSensors() {
         // register a listener to receive step events
-        actionDetector.registerOnStepListener(new OnStepListener() {
+        stepDetector.registerOnStepListener(new OnActionListener() {
             @Override
-            public void onStepCountUpdated(int stepCount) {
+            public void onActionCountUpdated(int stepCount) {
                 broadcastLocalStepCount(stepCount);
             }
 
             @Override
-            public void onStepDetected(long timestamp, float[] values) {
+            public void onActionDetected(long timestamp, float[] values) {
                 broadcastStepDetected(timestamp, values);
             }
         });
@@ -295,7 +295,7 @@ public class BandService extends SensorService implements BandGyroscopeEventList
                 gyroscopeX, gyroscopeY, gyroscopeZ));
         String sample = TextUtils.join(",", data);
         Log.d(TAG, sample);
-        actionDetector.detectSteps(event.getTimestamp(), accelerationX, accelerationY, accelerationZ);
+        stepDetector.detectSteps(event.getTimestamp(), accelerationX, accelerationY, accelerationZ);
     }
 
     //TODO: Remove method from starter code

@@ -11,16 +11,16 @@ import cs.umass.edu.myactivitiestoolkit.processing.Filter;
 
 /**
  * This class is responsible for detecting steps from the accelerometer sensor.
- * All {@link OnStepListener step listeners} that have been registered will
+ * All {@link OnActionListener step listeners} that have been registered will
  * be notified when a step is detected.
  */
-public class ActionDetector implements SensorEventListener {
+public class StepDetector implements SensorEventListener {
     /** Used for debugging purposes. */
     @SuppressWarnings("unused")
-    private static final String TAG = ActionDetector.class.getName();
+    private static final String TAG = StepDetector.class.getName();
 
     /** Maintains the set of listeners registered to handle step events. **/
-    private ArrayList<OnStepListener> mStepListeners;
+    private ArrayList<OnActionListener> mStepListeners;
 
     //TODO: Remove some fields from starter code
     private final Filter mFilter;
@@ -35,19 +35,19 @@ public class ActionDetector implements SensorEventListener {
     /**
      * The number of steps taken.
      */
-    private int actionCount;
+    private int stepCount;
 
-    public ActionDetector(){
+    public StepDetector(){
         mFilter = new Filter(3);
         mStepListeners = new ArrayList<>();
-        actionCount = 0;
+        stepCount = 0;
     }
 
     /**
      * Registers a step listener for handling step events.
      * @param stepListener defines how step events are handled.
      */
-    public void registerOnStepListener(final OnStepListener stepListener){
+    public void registerOnStepListener(final OnActionListener stepListener){
         mStepListeners.add(stepListener);
     }
 
@@ -55,7 +55,7 @@ public class ActionDetector implements SensorEventListener {
      * Unregisters the specified step listener.
      * @param stepListener the listener to be unregistered. It must already be registered.
      */
-    public void unregisterOnStepListener(final OnStepListener stepListener){
+    public void unregisterOnStepListener(final OnActionListener stepListener){
         mStepListeners.remove(stepListener);
     }
 
@@ -147,10 +147,10 @@ public class ActionDetector implements SensorEventListener {
      * of the current step count.
      */
     private void onStepDetected(long timestamp, float[] values){
-        actionCount++;
-        for (OnStepListener stepListener : mStepListeners){
-            stepListener.onStepDetected(timestamp, values);
-            stepListener.onStepCountUpdated(actionCount);
+        stepCount++;
+        for (OnActionListener stepListener : mStepListeners){
+            stepListener.onActionDetected(timestamp, values);
+            stepListener.onActionCountUpdated(stepCount);
         }
     }
 }

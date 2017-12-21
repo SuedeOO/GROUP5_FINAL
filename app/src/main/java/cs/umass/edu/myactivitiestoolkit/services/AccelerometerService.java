@@ -16,9 +16,9 @@ import org.json.JSONObject;
 import cs.umass.edu.myactivitiestoolkit.R;
 import cs.umass.edu.myactivitiestoolkit.communication.MHLClientFilter;
 import cs.umass.edu.myactivitiestoolkit.processing.Filter;
-import cs.umass.edu.myactivitiestoolkit.steps.OnStepListener;
+import cs.umass.edu.myactivitiestoolkit.steps.OnActionListener;
 import cs.umass.edu.myactivitiestoolkit.constants.Constants;
-import cs.umass.edu.myactivitiestoolkit.steps.ActionDetector;
+import cs.umass.edu.myactivitiestoolkit.steps.StepDetector;
 import edu.umass.cs.MHLClient.client.MessageReceiver;
 import edu.umass.cs.MHLClient.client.MobileIOClient;
 import edu.umass.cs.MHLClient.sensors.AccelerometerReading;
@@ -96,7 +96,7 @@ public class AccelerometerService extends SensorService implements SensorEventLi
         private Sensor mStepSensor;
 
         /** Defines your step detection algorithm. **/
-        private final ActionDetector actionDetector;
+        private final StepDetector stepDetector;
 
         /**
          * The step count as predicted by the Android built-in step detection algorithm.
@@ -114,7 +114,7 @@ public class AccelerometerService extends SensorService implements SensorEventLi
             //<SOLUTION A1>
             filter = new Filter(3);
             //</SOLUTION A1>
-            actionDetector = new ActionDetector();
+            stepDetector = new StepDetector();
         }
 
         @Override
@@ -218,18 +218,18 @@ public class AccelerometerService extends SensorService implements SensorEventLi
             // TODO (Assignment 1) : Register accelerometer with step detector and register on step listener for sending steps to UI
             //<SOLUTION A1>
             // register a listener to receive step events
-            actionDetector.registerOnStepListener(new OnStepListener() {
+            stepDetector.registerOnStepListener(new OnActionListener() {
                 @Override
-                public void onStepCountUpdated(int stepCount) {
+                public void onActionCountUpdated(int stepCount) {
                     broadcastLocalStepCount(stepCount);
                 }
 
                 @Override
-                public void onStepDetected(long timestamp, float[] values) {
+                public void onActionDetected(long timestamp, float[] values) {
                     broadcastStepDetected(timestamp, values);
                 }
             });
-            mSensorManager.registerListener(actionDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+            mSensorManager.registerListener(stepDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
             //</SOLUTION A1>
         }
 
@@ -242,7 +242,7 @@ public class AccelerometerService extends SensorService implements SensorEventLi
             //<SOLUTION A0/A1>
             if (mSensorManager != null) {
                 mSensorManager.unregisterListener(this, mAccelerometerSensor);
-                mSensorManager.unregisterListener(actionDetector, mAccelerometerSensor);
+                mSensorManager.unregisterListener(stepDetector, mAccelerometerSensor);
                 mSensorManager.unregisterListener(this, mStepSensor);
             }
             //</SOLUTION A0/A1>
