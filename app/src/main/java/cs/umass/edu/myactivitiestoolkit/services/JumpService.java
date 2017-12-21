@@ -31,8 +31,8 @@ public class JumpService extends SensorService implements  SensorEventListener{
     private SensorManager mSensorManager;
     private Sensor mAccelerometerSensor;
     private final JumpDetector jumpDetector;
-    private double lastJump = 0;
-    private double highestJump = 0;
+    //private double lastJump = 0;
+    //private double highestJump = 0;
     private Filter filter;
 
     public JumpService(){
@@ -94,6 +94,8 @@ public class JumpService extends SensorService implements  SensorEventListener{
 
     @Override
     protected void registerSensors() {
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
         if (mSensorManager == null){
             Log.e(TAG, Constants.ERROR_MESSAGES.ERROR_NO_SENSOR_MANAGER);
             Toast.makeText(getApplicationContext(), Constants.ERROR_MESSAGES.ERROR_NO_SENSOR_MANAGER,Toast.LENGTH_LONG).show();
