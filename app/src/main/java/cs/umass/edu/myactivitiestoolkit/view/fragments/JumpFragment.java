@@ -134,17 +134,14 @@ public class JumpFragment extends Fragment{
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction() != null) {
-                if (intent.getAction().equals(Constants.ACTION.BROADCAST_MESSAGE))
-                {
+                if (intent.getAction().equals(Constants.ACTION.BROADCAST_MESSAGE)) {
                     int message = intent.getIntExtra(Constants.KEY.MESSAGE, -1);
-                    if (message == Constants.MESSAGE.ACCELEROMETER_SERVICE_STOPPED){
+                    if (message == Constants.MESSAGE.ACCELEROMETER_SERVICE_STOPPED) {
                         switchAccelerometer.setChecked(false);
-                    } else if (message == Constants.MESSAGE.BAND_SERVICE_STOPPED){
+                    } else if (message == Constants.MESSAGE.BAND_SERVICE_STOPPED) {
                         switchAccelerometer.setChecked(false);
                     }
-                }
-                else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ACCELEROMETER_DATA))
-                {
+                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ACCELEROMETER_DATA)) {
                     long timestamp = intent.getLongExtra(Constants.KEY.TIMESTAMP, -1);
                     float[] accelerometerValues = intent.getFloatArrayExtra(Constants.KEY.ACCELEROMETER_DATA);
 //                    displayAccelerometerReading(accelerometerValues[0], accelerometerValues[1], accelerometerValues[2]);
@@ -153,27 +150,24 @@ public class JumpFragment extends Fragment{
                     xValues.add(accelerometerValues[0]);
                     yValues.add(accelerometerValues[1]);
                     zValues.add(accelerometerValues[2]);
-                    if (numberOfPoints >= GRAPH_CAPACITY)
-                    {
+                    if (numberOfPoints >= GRAPH_CAPACITY) {
                         timestamps.poll();
                         xValues.poll();
                         yValues.poll();
                         zValues.poll();
-                        while (peakTimestamps.size() > 0 && (peakTimestamps.peek().longValue() < timestamps.peek().longValue()))
-                        {
+                        while (peakTimestamps.size() > 0 && (peakTimestamps.peek().longValue() < timestamps.peek().longValue())) {
                             peakTimestamps.poll();
                             peakValues.poll();
                         }
-                    }
-                    else
+                    } else
                         numberOfPoints++;
                     updatePlot();
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ANDROID_STEP_COUNT)) {
-                    int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
-                    displayAndroidStepCount(stepCount);
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_LOCAL_STEP_COUNT)) {
-                    int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
-                    displayLocalStepCount(stepCount);
+                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_LAST_JUMP)) {
+                    double distance = intent.getIntExtra(Constants.KEY.LAST_JUMP, 0);
+                    displayLastJump(distance);
+                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_HIGHEST_JUMP)) {
+                    double distance = intent.getIntExtra(Constants.KEY.HIGHEST_JUMP, 0);
+                    displayHighestJump(distance);
                 } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_SERVER_STEP_COUNT)) {
                     int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
                     displayServerStepCount(stepCount);
@@ -187,7 +181,7 @@ public class JumpFragment extends Fragment{
                     String output = String.format(Locale.getDefault(), "The average acceleration is (%f,%f,%f).", average_acceleration[0], average_acceleration[1], average_acceleration[2]);
                     Toast.makeText(getActivity().getApplicationContext(), output, Toast.LENGTH_LONG).show();
                     Log.d(TAG, output);
-                }else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ACCELEROMETER_PEAK)){
+                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ACCELEROMETER_PEAK)) {
                     long timestamp = intent.getLongExtra(Constants.KEY.ACCELEROMETER_PEAK_TIMESTAMP, -1);
                     float[] values = intent.getFloatArrayExtra(Constants.KEY.ACCELEROMETER_PEAK_VALUE);
                     if (timestamp > 0) {
@@ -195,12 +189,6 @@ public class JumpFragment extends Fragment{
                         peakValues.add(values[2]); //place on z-axis signal
                     }
                 }
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_HIGHEST_JUMP)) {
-                    int jumpHeight = intent.getIntExtra(Constants.KEY.HIGHEST_JUMP,  0);
-                    displayHighestJump(jumpHeight);
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_LAST_JUMP)) {
-                    int jumpHeight = intent.getIntExtra(Constants.KEY.LAST_JUMP,  0);
-                    displayLastJump(jumpHeight);
             }
         }
     };
@@ -217,14 +205,14 @@ public class JumpFragment extends Fragment{
         final View view = inflater.inflate(R.layout.fragment_jump, container, false);
 
         //obtain a reference to the accelerometer reading text field
-        txtAccelerometerReading = (TextView) view.findViewById(R.id.txtAccelerometerReading);
+       // txtAccelerometerReading = (TextView) view.findViewById(R.id.txtAccelerometerReading);
 
         //obtain references to the step count text fields
         txtHighestJump = (TextView) view.findViewById(R.id.txtHighestJump);
         txtLastJump = (TextView) view.findViewById(R.id.txtLastJump);
 
         //obtain reference to the activity text field
-        txtActivity = (TextView) view.findViewById(R.id.txtActivity);
+        //txtActivity = (TextView) view.findViewById(R.id.txtActivity);
 
         //obtain references to the on/off switches and handle the toggling appropriately
         switchAccelerometer = (Switch) view.findViewById(R.id.switchAccelerometer);
@@ -370,11 +358,11 @@ public class JumpFragment extends Fragment{
      * Displays the step count as computed by your local step detection algorithm.
      * @param jump the number of steps taken since the service started
      */
-    private void displayLastJump(final int jump){
+    private void displayLastJump(final double jump){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                txtHighestJump.setText(String.format(Locale.getDefault(), getString(R.string.last_jump), jump));
+                txtLastJump.setText(String.format(Locale.getDefault(), getString(R.string.last_jump), jump));
             }
         });
     }
@@ -383,7 +371,7 @@ public class JumpFragment extends Fragment{
      * Displays the step count as computed by the Android built-in step detection algorithm.
      * @param jump the number of steps taken since the service started
      */
-    private void displayHighestJump(final int jump){
+    private void displayHighestJump(final double jump){
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

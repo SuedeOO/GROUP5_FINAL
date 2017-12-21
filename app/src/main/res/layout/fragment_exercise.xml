@@ -81,6 +81,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingStart="10dp"
+                    android:text="@string/server_step_count_initial"
                     android:textColor="@android:color/holo_blue_dark"
                     android:textSize="18sp" />
 
@@ -92,6 +93,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingStart="10dp"
+                    android:text="@string/server_step_count_initial"
                     android:textColor="@android:color/holo_blue_dark"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -112,9 +114,10 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:ap="http://schemas.android.com/apk/res-auto"
-        android:layout_below="@id/layoutAccelerometer"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        android:layout_below="@id/layoutAccelerometer"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -130,14 +133,14 @@
         </LinearLayout>
 
         <com.androidplot.xy.XYPlot
-            style="@style/APDefacto.Light"
             android:id="@+id/accelerometerPlot"
+            style="@style/APDefacto.Light"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            ap:title="Accelerometer Signal"
-            ap:rangeTitle="m/s^2"
+            ap:lineLabelRotationBottom="-45"
             ap:lineLabels="left|bottom"
-            ap:lineLabelRotationBottom="-45"/>
+            ap:rangeTitle="m/s^2"
+            ap:title="Accelerometer Signal" />
     </LinearLayout>
 
 </RelativeLayout>

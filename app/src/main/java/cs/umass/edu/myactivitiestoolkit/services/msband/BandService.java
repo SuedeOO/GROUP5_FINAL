@@ -26,7 +26,7 @@ import cs.umass.edu.myactivitiestoolkit.R;
 import cs.umass.edu.myactivitiestoolkit.communication.MHLClientFilter;
 import cs.umass.edu.myactivitiestoolkit.constants.Constants;
 import cs.umass.edu.myactivitiestoolkit.services.SensorService;
-import cs.umass.edu.myactivitiestoolkit.steps.OnActionListener;
+import cs.umass.edu.myactivitiestoolkit.steps.OnStepListener;
 import cs.umass.edu.myactivitiestoolkit.steps.StepDetector;
 import edu.umass.cs.MHLClient.client.MessageReceiver;
 import edu.umass.cs.MHLClient.sensors.AccelerometerReading;
@@ -191,14 +191,14 @@ public class BandService extends SensorService implements BandGyroscopeEventList
     @Override
     protected void registerSensors() {
         // register a listener to receive step events
-        stepDetector.registerOnStepListener(new OnActionListener() {
+        stepDetector.registerOnStepListener(new OnStepListener() {
             @Override
-            public void onActionCountUpdated(int stepCount) {
+            public void onStepCountUpdated(int stepCount) {
                 broadcastLocalStepCount(stepCount);
             }
 
             @Override
-            public void onActionDetected(long timestamp, float[] values) {
+            public void onStepDetected(long timestamp, float[] values) {
                 broadcastStepDetected(timestamp, values);
             }
         });

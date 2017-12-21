@@ -16,7 +16,7 @@ import org.json.JSONObject;
 import cs.umass.edu.myactivitiestoolkit.R;
 import cs.umass.edu.myactivitiestoolkit.communication.MHLClientFilter;
 import cs.umass.edu.myactivitiestoolkit.processing.Filter;
-import cs.umass.edu.myactivitiestoolkit.steps.OnActionListener;
+import cs.umass.edu.myactivitiestoolkit.steps.OnStepListener;
 import cs.umass.edu.myactivitiestoolkit.constants.Constants;
 import cs.umass.edu.myactivitiestoolkit.steps.StepDetector;
 import edu.umass.cs.MHLClient.client.MessageReceiver;
@@ -83,215 +83,215 @@ import edu.umass.cs.MHLClient.sensors.AccelerometerReading;
  */
 public class AccelerometerService extends SensorService implements SensorEventListener {
 
-        /** Used during debugging to identify logs by class */
-        private static final String TAG = AccelerometerService.class.getName();
+    /** Used during debugging to identify logs by class */
+    private static final String TAG = AccelerometerService.class.getName();
 
-        /** Sensor Manager object for registering and unregistering system sensors */
-        private SensorManager mSensorManager;
+    /** Sensor Manager object for registering and unregistering system sensors */
+    private SensorManager mSensorManager;
 
-        /** Manages the physical accelerometer sensor on the phone. */
-        private Sensor mAccelerometerSensor;
+    /** Manages the physical accelerometer sensor on the phone. */
+    private Sensor mAccelerometerSensor;
 
-        /** Android built-in step detection sensor **/
-        private Sensor mStepSensor;
+    /** Android built-in step detection sensor **/
+    private Sensor mStepSensor;
 
-        /** Defines your step detection algorithm. **/
-        private final StepDetector stepDetector;
+    /** Defines your step detection algorithm. **/
+    private final StepDetector stepDetector;
 
-        /**
-         * The step count as predicted by the Android built-in step detection algorithm.
-         */
-        private int androidStepCount = 0;
+    /**
+     * The step count as predicted by the Android built-in step detection algorithm.
+     */
+    private int androidStepCount = 0;
 
-        /**
-         * The step count as predicted by your server-side step detection algorithm.
-         */
-        private int serverStepCount = 0;
+    /**
+     * The step count as predicted by your server-side step detection algorithm.
+     */
+    private int serverStepCount = 0;
 
-        private Filter filter; // <SOLUTION/ A1>
+    private Filter filter; // <SOLUTION/ A1>
 
     public AccelerometerService(){
+        //<SOLUTION A1>
+        filter = new Filter(3);
+        //</SOLUTION A1>
+        stepDetector = new StepDetector();
+    }
+
+    @Override
+    protected void onServiceStarted() {
+        broadcastMessage(Constants.MESSAGE.ACCELEROMETER_SERVICE_STARTED);
+    }
+
+    @Override
+    protected void onServiceStopped() {
+        broadcastMessage(Constants.MESSAGE.ACCELEROMETER_SERVICE_STOPPED);
+        if (client != null)
+            client.unregisterMessageReceivers();
+    }
+
+    @Override
+    public void onConnected() {
+        super.onConnected();
+
+        client.registerMessageReceiver(new MessageReceiver(MHLClientFilter.AVERAGE_ACCELERATION) {
+            @Override
+            protected void onMessageReceived(JSONObject json) {
+                Log.d(TAG, "Received average acceleration from server.");
+                try {
+                    JSONObject data = json.getJSONObject("data");
+                    float average_X = (float)data.getDouble("average_X");
+                    float average_Y = (float)data.getDouble("average_Y");
+                    float average_Z = (float)data.getDouble("average_Z");
+                    broadcastAverageAcceleration(average_X, average_Y, average_Z);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        client.registerMessageReceiver(new MessageReceiver(MHLClientFilter.STEP) {
+            @Override
+            protected void onMessageReceived(JSONObject json) {
+                Log.d(TAG, "Received step update from server.");
+                try {
+                    JSONObject data = json.getJSONObject("data");
+                    long timestamp = data.getLong("timestamp");
+                    Log.d(TAG, "Step occurred at " + timestamp + ".");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                serverStepCount++;
+                broadcastServerStepCount(serverStepCount);
+            }
+        });
+        client.registerMessageReceiver(new MessageReceiver(MHLClientFilter.ACTIVITY) {
+            @Override
+            protected void onMessageReceived(JSONObject json) {
+                Log.d(TAG, "Received activity update from server.");
+                String activity;
+                try {
+                    JSONObject data = json.getJSONObject("data");
+                    activity = data.getString("activity");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                Log.d(TAG, "Activity is : " + activity);
+                broadcastActivity(activity);
+            }
+        });
+    }
+
+    /**
+     * Register accelerometer sensor listener
+     */
+    @Override
+    protected void registerSensors(){
+        // TODO (Assignment 0) : Register the accelerometer sensor using the sensor manager
+        //<SOLUTION A0>
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+        if (mSensorManager == null){
+            Log.e(TAG, Constants.ERROR_MESSAGES.ERROR_NO_SENSOR_MANAGER);
+            Toast.makeText(getApplicationContext(), Constants.ERROR_MESSAGES.ERROR_NO_SENSOR_MANAGER,Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        mAccelerometerSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        if (mAccelerometerSensor != null) {
+            mSensorManager.registerListener(this, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+        } else {
+            Toast.makeText(getApplicationContext(), Constants.ERROR_MESSAGES.ERROR_NO_ACCELEROMETER, Toast.LENGTH_LONG).show();
+            Log.w(TAG, Constants.ERROR_MESSAGES.ERROR_NO_ACCELEROMETER);
+        }
+        //</SOLUTION A0>
+
+        // TODO (Assignment 1) : Register the built-in Android step detector (API 19 or higher)
+        //<SOLUTION A1>
+        // built-in step detector only available for API level 19 and above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            mStepSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+            mSensorManager.registerListener(this, mStepSensor, SensorManager.SENSOR_DELAY_GAME);
+        }
+        //</SOLUTION A1>
+
+        // TODO (Assignment 1) : Register accelerometer with step detector and register on step listener for sending steps to UI
+        //<SOLUTION A1>
+        // register a listener to receive step events
+        stepDetector.registerOnStepListener(new OnStepListener() {
+            @Override
+            public void onStepCountUpdated(int stepCount) {
+                broadcastLocalStepCount(stepCount);
+            }
+
+            @Override
+            public void onStepDetected(long timestamp, float[] values) {
+                broadcastStepDetected(timestamp, values);
+            }
+        });
+
+        mSensorManager.registerListener(stepDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+        //</SOLUTION A1>
+    }
+
+    /**
+     * Unregister the sensor listener, this is essential for the battery life!
+     */
+    @Override
+    protected void unregisterSensors() {
+        // TODO : Unregister sensors
+        //<SOLUTION A0/A1>
+        if (mSensorManager != null) {
+            mSensorManager.unregisterListener(this, mAccelerometerSensor);
+            mSensorManager.unregisterListener(stepDetector, mAccelerometerSensor);
+            mSensorManager.unregisterListener(this, mStepSensor);
+        }
+        //</SOLUTION A0/A1>
+    }
+
+    @Override
+    protected int getNotificationID() {
+        return Constants.NOTIFICATION_ID.ACCELEROMETER_SERVICE;
+    }
+
+    @Override
+    protected String getNotificationContentText() {
+        return getString(R.string.activity_service_notification);
+    }
+
+    @Override
+    protected int getNotificationIconResourceID() {
+        return R.drawable.ic_running_white_24dp;
+    }
+
+    //This method is called when we receive a sensor reading. We will be interested in this method primarily.
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             //<SOLUTION A1>
-            filter = new Filter(3);
-            //</SOLUTION A1>
-            stepDetector = new StepDetector();
-        }
+            double[] filteredValues = filter.getFilteredValues(event.values[0], event.values[1], event.values[2]);
+            client.sendSensorReading(new AccelerometerReading(userID, "MOBILE", "", event.timestamp, (float)filteredValues[0], (float)filteredValues[1], (float)filteredValues[2]));
 
-        @Override
-        protected void onServiceStarted() {
-            broadcastMessage(Constants.MESSAGE.ACCELEROMETER_SERVICE_STARTED);
-        }
-
-        @Override
-        protected void onServiceStopped() {
-            broadcastMessage(Constants.MESSAGE.ACCELEROMETER_SERVICE_STOPPED);
-            if (client != null)
-                client.unregisterMessageReceivers();
-        }
-
-        @Override
-        public void onConnected() {
-            super.onConnected();
-
-            client.registerMessageReceiver(new MessageReceiver(MHLClientFilter.AVERAGE_ACCELERATION) {
-                @Override
-                protected void onMessageReceived(JSONObject json) {
-                    Log.d(TAG, "Received average acceleration from server.");
-                    try {
-                        JSONObject data = json.getJSONObject("data");
-                        float average_X = (float)data.getDouble("average_X");
-                        float average_Y = (float)data.getDouble("average_Y");
-                        float average_Z = (float)data.getDouble("average_Z");
-                        broadcastAverageAcceleration(average_X, average_Y, average_Z);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            client.registerMessageReceiver(new MessageReceiver(MHLClientFilter.STEP) {
-                @Override
-                protected void onMessageReceived(JSONObject json) {
-                    Log.d(TAG, "Received step update from server.");
-                    try {
-                        JSONObject data = json.getJSONObject("data");
-                        long timestamp = data.getLong("timestamp");
-                        Log.d(TAG, "Step occurred at " + timestamp + ".");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    serverStepCount++;
-                    broadcastServerStepCount(serverStepCount);
-                }
-            });
-            client.registerMessageReceiver(new MessageReceiver(MHLClientFilter.ACTIVITY) {
-                @Override
-                protected void onMessageReceived(JSONObject json) {
-                    Log.d(TAG, "Received activity update from server.");
-                    String activity;
-                    try {
-                        JSONObject data = json.getJSONObject("data");
-                        activity = data.getString("activity");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        return;
-                    }
-                    Log.d(TAG, "Activity is : " + activity);
-                    broadcastActivity(activity);
-                }
-            });
-        }
-
-        /**
-         * Register accelerometer sensor listener
-         */
-        @Override
-        protected void registerSensors(){
-            // TODO (Assignment 0) : Register the accelerometer sensor using the sensor manager
-            //<SOLUTION A0>
-            mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-
-            if (mSensorManager == null){
-                Log.e(TAG, Constants.ERROR_MESSAGES.ERROR_NO_SENSOR_MANAGER);
-                Toast.makeText(getApplicationContext(), Constants.ERROR_MESSAGES.ERROR_NO_SENSOR_MANAGER,Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            mAccelerometerSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-            if (mAccelerometerSensor != null) {
-                mSensorManager.registerListener(this, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
-            } else {
-                Toast.makeText(getApplicationContext(), Constants.ERROR_MESSAGES.ERROR_NO_ACCELEROMETER, Toast.LENGTH_LONG).show();
-                Log.w(TAG, Constants.ERROR_MESSAGES.ERROR_NO_ACCELEROMETER);
-            }
-            //</SOLUTION A0>
-
-            // TODO (Assignment 1) : Register the built-in Android step detector (API 19 or higher)
-            //<SOLUTION A1>
-            // built-in step detector only available for API level 19 and above
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                mStepSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-                mSensorManager.registerListener(this, mStepSensor, SensorManager.SENSOR_DELAY_GAME);
-            }
+            float[] floatFilteredValues = new float[]{(float) filteredValues[0], (float) filteredValues[1], (float) filteredValues[2]};
+            broadcastAccelerometerReading(event.timestamp, floatFilteredValues);
             //</SOLUTION A1>
 
-            // TODO (Assignment 1) : Register accelerometer with step detector and register on step listener for sending steps to UI
-            //<SOLUTION A1>
-            // register a listener to receive step events
-            stepDetector.registerOnStepListener(new OnActionListener() {
-                @Override
-                public void onActionCountUpdated(int stepCount) {
-                    broadcastLocalStepCount(stepCount);
-                }
-
-                @Override
-                public void onActionDetected(long timestamp, float[] values) {
-                    broadcastStepDetected(timestamp, values);
-                    broadcastJumpDetected(timestamp, values);
-                }
-            });
-            mSensorManager.registerListener(stepDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
-            //</SOLUTION A1>
+        }else if (event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+            broadcastAndroidStepCount(androidStepCount++);
+        } else {
+            Log.w(TAG, Constants.ERROR_MESSAGES.WARNING_SENSOR_NOT_SUPPORTED);
         }
+    }
 
-        /**
-         * Unregister the sensor listener, this is essential for the battery life!
-         */
-        @Override
-        protected void unregisterSensors() {
-            // TODO : Unregister sensors
-            //<SOLUTION A0/A1>
-            if (mSensorManager != null) {
-                mSensorManager.unregisterListener(this, mAccelerometerSensor);
-                mSensorManager.unregisterListener(stepDetector, mAccelerometerSensor);
-                mSensorManager.unregisterListener(this, mStepSensor);
-            }
-            //</SOLUTION A0/A1>
-        }
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        Log.i(TAG, "Accuracy changed: " + accuracy);
+    }
 
-        @Override
-        protected int getNotificationID() {
-            return Constants.NOTIFICATION_ID.ACCELEROMETER_SERVICE;
-        }
-
-        @Override
-        protected String getNotificationContentText() {
-            return getString(R.string.activity_service_notification);
-        }
-
-        @Override
-        protected int getNotificationIconResourceID() {
-            return R.drawable.ic_running_white_24dp;
-        }
-
-        //This method is called when we receive a sensor reading. We will be interested in this method primarily.
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-                //<SOLUTION A1>
-                double[] filteredValues = filter.getFilteredValues(event.values[0], event.values[1], event.values[2]);
-                client.sendSensorReading(new AccelerometerReading(userID, "MOBILE", "", event.timestamp, (float)filteredValues[0], (float)filteredValues[1], (float)filteredValues[2]));
-
-                float[] floatFilteredValues = new float[]{(float) filteredValues[0], (float) filteredValues[1], (float) filteredValues[2]};
-                broadcastAccelerometerReading(event.timestamp, floatFilteredValues);
-                //</SOLUTION A1>
-
-            }else if (event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
-                broadcastAndroidStepCount(androidStepCount++);
-            } else {
-                Log.w(TAG, Constants.ERROR_MESSAGES.WARNING_SENSOR_NOT_SUPPORTED);
-            }
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            Log.i(TAG, "Accuracy changed: " + accuracy);
-        }
-
-        /**
-         * Broadcasts the accelerometer reading to other application components, e.g. the main UI.
-         * @param accelerometerReadings the x, y, and z accelerometer readings
-         */
+    /**
+     * Broadcasts the accelerometer reading to other application components, e.g. the main UI.
+     * @param accelerometerReadings the x, y, and z accelerometer readings
+     */
     public void broadcastAccelerometerReading(final long timestamp, final float[] accelerometerReadings) {
         Intent intent = new Intent();
         intent.putExtra(Constants.KEY.TIMESTAMP, timestamp);
@@ -341,18 +341,6 @@ public class AccelerometerService extends SensorService implements SensorEventLi
      * Broadcasts a step event to other application components, e.g. the main UI.
      */
     public void broadcastStepDetected(long timestamp, float[] values) {
-        Intent intent = new Intent();
-        intent.putExtra(Constants.KEY.ACCELEROMETER_PEAK_TIMESTAMP, timestamp);
-        intent.putExtra(Constants.KEY.ACCELEROMETER_PEAK_VALUE, values);
-        intent.setAction(Constants.ACTION.BROADCAST_ACCELEROMETER_PEAK);
-        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
-        manager.sendBroadcast(intent);
-    }
-
-    /**
-     * Broadcasts a step event to other application components, e.g. the main UI.
-     */
-    public void broadcastJumpDetected(long timestamp, float[] values) {
         Intent intent = new Intent();
         intent.putExtra(Constants.KEY.ACCELEROMETER_PEAK_TIMESTAMP, timestamp);
         intent.putExtra(Constants.KEY.ACCELEROMETER_PEAK_VALUE, values);

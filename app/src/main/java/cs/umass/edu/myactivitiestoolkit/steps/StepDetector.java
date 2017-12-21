@@ -3,6 +3,7 @@ package cs.umass.edu.myactivitiestoolkit.steps;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ import cs.umass.edu.myactivitiestoolkit.processing.Filter;
 
 /**
  * This class is responsible for detecting steps from the accelerometer sensor.
- * All {@link OnActionListener step listeners} that have been registered will
+ * All {@link OnStepListener step listeners} that have been registered will
  * be notified when a step is detected.
  */
 public class StepDetector implements SensorEventListener {
@@ -20,7 +21,7 @@ public class StepDetector implements SensorEventListener {
     private static final String TAG = StepDetector.class.getName();
 
     /** Maintains the set of listeners registered to handle step events. **/
-    private ArrayList<OnActionListener> mStepListeners;
+    private ArrayList<OnStepListener> mStepListeners;
 
     //TODO: Remove some fields from starter code
     private final Filter mFilter;
@@ -47,7 +48,7 @@ public class StepDetector implements SensorEventListener {
      * Registers a step listener for handling step events.
      * @param stepListener defines how step events are handled.
      */
-    public void registerOnStepListener(final OnActionListener stepListener){
+    public void registerOnStepListener(final OnStepListener stepListener){
         mStepListeners.add(stepListener);
     }
 
@@ -55,7 +56,7 @@ public class StepDetector implements SensorEventListener {
      * Unregisters the specified step listener.
      * @param stepListener the listener to be unregistered. It must already be registered.
      */
-    public void unregisterOnStepListener(final OnActionListener stepListener){
+    public void unregisterOnStepListener(final OnStepListener stepListener){
         mStepListeners.remove(stepListener);
     }
 
@@ -148,9 +149,9 @@ public class StepDetector implements SensorEventListener {
      */
     private void onStepDetected(long timestamp, float[] values){
         stepCount++;
-        for (OnActionListener stepListener : mStepListeners){
-            stepListener.onActionDetected(timestamp, values);
-            stepListener.onActionCountUpdated(stepCount);
+        for (OnStepListener stepListener : mStepListeners){
+            stepListener.onStepDetected(timestamp, values);
+            stepListener.onStepCountUpdated(stepCount);
         }
     }
 }
