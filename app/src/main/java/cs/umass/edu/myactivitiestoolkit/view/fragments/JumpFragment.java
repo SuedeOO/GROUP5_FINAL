@@ -6,26 +6,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
-import java.text.FieldPosition;
-import java.text.Format;
-import java.text.ParsePosition;
-import java.util.ArrayList;
-import java.util.LinkedList;
+
 import java.util.Locale;
-import java.util.Queue;
 
 import cs.umass.edu.myactivitiestoolkit.R;
 import cs.umass.edu.myactivitiestoolkit.constants.Constants;
@@ -95,7 +86,7 @@ public class JumpFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_jump, container, false);
         txtHighestJump = (TextView) view.findViewById(R.id.txtHighestJump);
-        txtLastJump = (TextView) view.findViewById(R.id.txtLastJump);
+        txtLastJump = (TextView) view.findViewById(R.id.txtLastThrow);
 
         jumpAccelerometer = (Switch) view.findViewById(R.id.jumpAccelerometer);
         jumpAccelerometer.setChecked(serviceManager.isServiceRunning(AccelerometerService.class));

@@ -55,6 +55,12 @@
     <string name="highest_jump_initial">Highest Jump: 0</string>
     <string name="last_jump_initial">Last Jump: 0</string>
 
-    <string name="last_throw" formatted="false">Last Jump: %d</string>
+    <string name="last_throw" formatted="false">Last Throw: %d</string>
+    <string name="best_throw" formatted="false">Best Throw: %d</string>
+
+    <string name="best_throw_initial">Best Throw: 0</string>
+    <string name="last_throw_initial">Last Throw: 0</string>
+    <string name="throw_far">SHOT PUT!</string>
+
     <string name="app_details">CS390MB : Mobile Health Sensing</string>
 </resources>

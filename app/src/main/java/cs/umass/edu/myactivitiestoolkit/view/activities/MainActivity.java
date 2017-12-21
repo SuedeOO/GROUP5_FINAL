@@ -68,10 +68,21 @@ public class MainActivity extends AppCompatActivity {
 //            @Override
 //            public int getPageNumber() { return 0; }
 //        },
-        JUMP_DATA(JumpFragment.class) {
+//        JUMP_DATA(JumpFragment.class) {
+//            @Override
+//            public String getTitle() {
+//                return "Jump!";
+//            }
+//
+//            @Override
+//            public int getPageNumber() {
+//                return 0;
+//            }
+//        };
+        THROW_DATA(ThrowFragment.class) {
             @Override
             public String getTitle() {
-                return "Jump!";
+                return "SHOTPUT!";
             }
 
             @Override
@@ -79,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 return 0;
             }
         };
+
 //        THROW_DATA(ThrowFragment.class) {
 //            @Override
 //            public String getTitle() {

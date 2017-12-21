@@ -4,7 +4,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -14,12 +13,11 @@ import org.json.JSONObject;
 
 import cs.umass.edu.myactivitiestoolkit.R;
 import cs.umass.edu.myactivitiestoolkit.communication.MHLClientFilter;
-import cs.umass.edu.myactivitiestoolkit.jump.JumpDetector;
-import cs.umass.edu.myactivitiestoolkit.jump.OnJumpListener;
+import cs.umass.edu.myactivitiestoolkit.activity.JumpDetector;
+import cs.umass.edu.myactivitiestoolkit.activity.OnJumpListener;
 import cs.umass.edu.myactivitiestoolkit.processing.Filter;
 import cs.umass.edu.myactivitiestoolkit.constants.Constants;
 import edu.umass.cs.MHLClient.client.MessageReceiver;
-import edu.umass.cs.MHLClient.client.MobileIOClient;
 import edu.umass.cs.MHLClient.sensors.AccelerometerReading;
 
 /**

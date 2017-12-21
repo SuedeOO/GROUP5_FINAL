@@ -1,4 +1,4 @@
-package cs.umass.edu.myactivitiestoolkit.jump;
+package cs.umass.edu.myactivitiestoolkit.activity;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
