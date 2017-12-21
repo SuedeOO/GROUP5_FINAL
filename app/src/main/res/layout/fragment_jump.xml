@@ -37,6 +37,7 @@
             android:id="@+id/layout_step_count">
 
             <LinearLayout
+                android:id="@+id/layout_jump_texts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >

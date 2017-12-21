@@ -50,7 +50,7 @@ import cs.umass.edu.myactivitiestoolkit.services.msband.BandService;
 public class ThrowFragment extends Fragment{
     /** Used during debugging to identify logs by class. */
     @SuppressWarnings("unused")
-    private static final String TAG = JumpFragment.class.getName();
+    private static final String TAG = ThrowFragment.class.getName();
 
     /** The switch which toggles the {@link AccelerometerService}. **/
     private Switch switchAccelerometer;
@@ -211,7 +211,7 @@ public class ThrowFragment extends Fragment{
 
         //obtain references to the step count text fields
         txtAndroidStepCount = (TextView) view.findViewById(R.id.txtAndroidStepCount);
-        txtLocalStepCount = (TextView) view.findViewById(R.id.txtLocalStepCount);
+        txtLocalStepCount = (TextView) view.findViewById(R.id.txtAndroidStepCount);
         txtServerStepCount = (TextView) view.findViewById(R.id.txtServerStepCount);
 
         //obtain reference to the activity text field
@@ -354,7 +354,7 @@ public class ThrowFragment extends Fragment{
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                txtLocalStepCount.setText(String.format(Locale.getDefault(), getString(R.string.last_jump), stepCount));
+
             }
         });
     }
@@ -367,7 +367,7 @@ public class ThrowFragment extends Fragment{
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                txtAndroidStepCount.setText(String.format(Locale.getDefault(), getString(R.string.highest_jump), stepCount));
+//                txtAndroidStepCount.setText(String.format(Locale.getDefault(), getString(R.string.highest_jump), stepCount));
             }
         });
     }
@@ -380,7 +380,7 @@ public class ThrowFragment extends Fragment{
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                txtServerStepCount.setText(String.format(Locale.getDefault(), getString(R.string.server_step_count), stepCount));
+//                txtServerStepCount.setText(String.format(Locale.getDefault(), getString(R.string.server_step_count), stepCount));
             }
         });
     }

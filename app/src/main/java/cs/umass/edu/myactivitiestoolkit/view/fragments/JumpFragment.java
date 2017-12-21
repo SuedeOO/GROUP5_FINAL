@@ -167,14 +167,16 @@ public class JumpFragment extends Fragment{
                     }
                     else
                         numberOfPoints++;
-
                     updatePlot();
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_HIGHEST_JUMP)) {
-                    int jumpHeight = intent.getIntExtra(Constants.KEY.HIGHEST_JUMP,  0);
-                    displayHighestJump(jumpHeight);
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_LAST_JUMP)) {
-                    int jumpHeight = intent.getIntExtra(Constants.KEY.LAST_JUMP,  0);
-                    displayLastJump(jumpHeight);
+                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ANDROID_STEP_COUNT)) {
+                    int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
+                    displayAndroidStepCount(stepCount);
+                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_LOCAL_STEP_COUNT)) {
+                    int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
+                    displayLocalStepCount(stepCount);
+                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_SERVER_STEP_COUNT)) {
+                    int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
+                    displayServerStepCount(stepCount);
                 } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ACTIVITY)) {
                     String activity = intent.getStringExtra(Constants.KEY.ACTIVITY);
                     Log.d(TAG, "Received activity : " + activity);
@@ -185,7 +187,7 @@ public class JumpFragment extends Fragment{
                     String output = String.format(Locale.getDefault(), "The average acceleration is (%f,%f,%f).", average_acceleration[0], average_acceleration[1], average_acceleration[2]);
                     Toast.makeText(getActivity().getApplicationContext(), output, Toast.LENGTH_LONG).show();
                     Log.d(TAG, output);
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ACCELEROMETER_PEAK)){
+                }else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ACCELEROMETER_PEAK)){
                     long timestamp = intent.getLongExtra(Constants.KEY.ACCELEROMETER_PEAK_TIMESTAMP, -1);
                     float[] values = intent.getFloatArrayExtra(Constants.KEY.ACCELEROMETER_PEAK_VALUE);
                     if (timestamp > 0) {
@@ -193,6 +195,12 @@ public class JumpFragment extends Fragment{
                         peakValues.add(values[2]); //place on z-axis signal
                     }
                 }
+                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_HIGHEST_JUMP)) {
+                    int jumpHeight = intent.getIntExtra(Constants.KEY.HIGHEST_JUMP,  0);
+                    displayHighestJump(jumpHeight);
+                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_LAST_JUMP)) {
+                    int jumpHeight = intent.getIntExtra(Constants.KEY.LAST_JUMP,  0);
+                    displayLastJump(jumpHeight);
             }
         }
     };
@@ -277,29 +285,44 @@ public class JumpFragment extends Fragment{
 
         return view;
     }
+    /**
+     * Displays the step count as computed by your local step detection algorithm.
+     * @param stepCount the number of steps taken since the service started
+     */
+    private void displayLocalStepCount(final int stepCount){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                txtLastJump.setText(String.format(Locale.getDefault(), getString(R.string.local_step_count), stepCount));
+            }
+        });
+    }
 
     /**
-     * When the fragment starts, register a {@link #receiver} to receive messages from the
-     * {@link AccelerometerService}. The intent filter defines messages we are interested in receiving.
-     * <br><br>
-     *
-     * We would like to receive sensor data, so we specify {@link Constants.ACTION#BROADCAST_ACCELEROMETER_DATA}.
-     * We would also like to receive step count updates, so include {@link Constants.ACTION#BROADCAST_ANDROID_STEP_COUNT},
-     * {@link Constants.ACTION#BROADCAST_LOCAL_STEP_COUNT} and {@link Constants.ACTION#BROADCAST_SERVER_STEP_COUNT}.
-     * <br><br>
-     *
-     * To optionally display the peak values you compute, include
-     * {@link Constants.ACTION#BROADCAST_ACCELEROMETER_PEAK}.
-     * <br><br>
-     *
-     * Lastly to update the state of the accelerometer switch properly, we listen for additional
-     * messages, using {@link Constants.ACTION#BROADCAST_MESSAGE}.
-     *
-     * @see Constants.ACTION
-     * @see IntentFilter
-     * @see LocalBroadcastManager
-     * @see #receiver
+     * Displays the step count as computed by the Android built-in step detection algorithm.
+     * @param stepCount the number of steps taken since the service started
      */
+    private void displayAndroidStepCount(final int stepCount){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                txtHighestJump.setText(String.format(Locale.getDefault(), getString(R.string.android_step_count), stepCount));
+            }
+        });
+    }
+
+    /**
+     * Displays the step count as computed by your server-side step detection algorithm.
+     * @param stepCount the number of steps taken since the service started
+     */
+    private void displayServerStepCount(final int stepCount){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                txtServerStepCount.setText(String.format(Locale.getDefault(), getString(R.string.server_step_count), stepCount));
+            }
+        });
+    }
     @Override
     public void onStart() {
         super.onStart();
@@ -307,13 +330,9 @@ public class JumpFragment extends Fragment{
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constants.ACTION.BROADCAST_MESSAGE);
-        filter.addAction(Constants.ACTION.BROADCAST_AVERAGE_ACCELERATION);
-        filter.addAction(Constants.ACTION.BROADCAST_ACTIVITY);
         filter.addAction(Constants.ACTION.BROADCAST_ACCELEROMETER_DATA);
-        filter.addAction(Constants.ACTION.BROADCAST_ACCELEROMETER_PEAK);
-        filter.addAction(Constants.ACTION.BROADCAST_ANDROID_STEP_COUNT);
-        filter.addAction(Constants.ACTION.BROADCAST_LOCAL_STEP_COUNT);
-        filter.addAction(Constants.ACTION.BROADCAST_SERVER_STEP_COUNT);
+        filter.addAction(Constants.ACTION.BROADCAST_HIGHEST_JUMP);
+        filter.addAction(Constants.ACTION.BROADCAST_LAST_JUMP);
         broadcastManager.registerReceiver(receiver, filter);
     }
 
@@ -373,18 +392,6 @@ public class JumpFragment extends Fragment{
         });
     }
 
-    /**
-     * Displays the step count as computed by your server-side step detection algorithm.
-     * @param stepCount the number of steps taken since the service started
-     */
-    private void displayServerStepCount(final int stepCount){
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                txtServerStepCount.setText(String.format(Locale.getDefault(), getString(R.string.server_step_count), stepCount));
-            }
-        });
-    }
 
     /**
      * Displays the activity predicted by the server-side classifier.
