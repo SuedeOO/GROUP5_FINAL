@@ -16,6 +16,7 @@ public class Constants {
         String BROADCAST_STATUS = "edu.umass.cs.my-activities-toolkit.action.broadcast-status";
         String BROADCAST_SPECTROGRAM = "edu.umass.cs.my-activities-toolkit.action.broadcast-spectrogram";
         String BROADCAST_ACCELEROMETER_DATA = "edu.umass.cs.my-activities-toolkit.action.broadcast-accelerometer-data";
+        String BROADCAST_GYROSCOPE_DATA = "edu.umass.cs.my-activities-toolkit.action.broadcast-gyroscope-data";
         String BROADCAST_ANDROID_STEP_COUNT = "edu.umass.cs.my-activities-toolkit.action.broadcast-android-step-count";
         String BROADCAST_LOCAL_STEP_COUNT = "edu.umass.cs.my-activities-toolkit.action.broadcast-local-step-count";
         String BROADCAST_SERVER_STEP_COUNT = "edu.umass.cs.my-activities-toolkit.action.broadcast-server-step-count";
@@ -23,6 +24,7 @@ public class Constants {
         String BROADCAST_PPG = "edu.umass.cs.my-activities-toolkit.action.broadcast-ppg";
         String BROADCAST_PPG_PEAK = "edu.umass.cs.my-activities-toolkit.action.broadcast-ppg-peak";
         String BROADCAST_ACCELEROMETER_PEAK = "edu.umass.cs.my-activities-toolkit.action.broadcast-accelerometer-peak";
+        String BROADCAST_GYROSCOPE_PEAK = "edu.umass.cs.my-activities-toolkit.action.broadcast-gyroscope-peak";
         String BROADCAST_HEART_RATE = "edu.umass.cs.my-activities-toolkit.action.broadcast-heart-rate";
         String START_SERVICE = "edu.umass.cs.my-activities-toolkit.action.start-service";
         String STOP_SERVICE = "edu.umass.cs.my-activities-toolkit.action.stop-service";
@@ -39,6 +41,7 @@ public class Constants {
         int PPG_SERVICE = 102;
         int LOCATION_SERVICE = 103;
         int AUDIO_SERVICE = 104;
+        int GYROSCOPE_SERVICE = 105;
     }
 
     /** Keys to identify key-value data sent to/from the sensor service */
@@ -49,6 +52,7 @@ public class Constants {
         String MESSAGE = "edu.umass.cs.my-activities-toolkit.key.message";
         String STATUS = "edu.umass.cs.my-activities-toolkit.key.status";
         String ACCELEROMETER_DATA = "edu.umass.cs.my-activities-toolkit.key.accelerometer-data";
+        String GYROSCOPE_DATA = "edu.umass.cs.my-activities-toolkit.key.gyroscope-data";
         String TIMESTAMP = "edu.umass.cs.my-activities-toolkit.key.ppg-timestamp";
         String PPG_DATA = "edu.umass.cs.my-activities-toolkit.key.ppg-value";
         String HEART_RATE = "edu.umass.cs.my-activities-toolkit.key.heart-rate";
@@ -57,6 +61,8 @@ public class Constants {
         String PPG_PEAK_VALUE = "edu.umass.cs.my-activities-toolkit.key.ppg-peak-value";
         String ACCELEROMETER_PEAK_TIMESTAMP = "edu.umass.cs.my-activities-toolkit.key.accelerometer-peak-timestamp";
         String ACCELEROMETER_PEAK_VALUE = "edu.umass.cs.my-activities-toolkit.key.accelerometer-peak-value";
+        String GYROSCOPE_PEAK_TIMESTAMP = "edu.umass.cs.my-activities-toolkit.key.gyroscope-peak-timestamp";
+        String GYROSCOPE_PEAK_VALUE = "edu.umass.cs.my-activities-toolkit.key.gyroscope-peak-value";
         String NOTIFICATION_ID = "edu.umass.cs.my-activities-toolkit.key.sensor-service-type";
         String AVERAGE_ACCELERATION = "edu.umass.cs.my-activities-toolkit.key.average-acceleration";
     }
@@ -75,6 +81,8 @@ public class Constants {
         int PPG_SERVICE_STOPPED = 7;
         int BAND_SERVICE_STARTED = 8;
         int BAND_SERVICE_STOPPED = 9;
+        int GYROSCOPE_SERVICE_STARTED = 10;
+        int GYROSCOPE_SERVICE_STOPPED = 11;
     }
 
     /** Error/warning messages displayed to the user TODO: put into string resources */
@@ -82,6 +90,7 @@ public class Constants {
         String ERROR_NO_ACCELEROMETER = "ERROR: No accelerometer available...";
         String ERROR_NO_SENSOR_MANAGER = "ERROR: Could not retrieve sensor manager...";
         String WARNING_SENSOR_NOT_SUPPORTED = "WARNING: Sensor not supported!";
+        String ERROR_NO_GYROSCOPE = "ERROR: No gyroscope available...";
     }
 
     /** Timestamp-relevant constants */

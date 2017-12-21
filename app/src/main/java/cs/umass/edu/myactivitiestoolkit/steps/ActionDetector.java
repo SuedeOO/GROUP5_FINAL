@@ -3,7 +3,6 @@ package cs.umass.edu.myactivitiestoolkit.steps;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -15,10 +14,10 @@ import cs.umass.edu.myactivitiestoolkit.processing.Filter;
  * All {@link OnStepListener step listeners} that have been registered will
  * be notified when a step is detected.
  */
-public class StepDetector implements SensorEventListener {
+public class ActionDetector implements SensorEventListener {
     /** Used for debugging purposes. */
     @SuppressWarnings("unused")
-    private static final String TAG = StepDetector.class.getName();
+    private static final String TAG = ActionDetector.class.getName();
 
     /** Maintains the set of listeners registered to handle step events. **/
     private ArrayList<OnStepListener> mStepListeners;
@@ -36,12 +35,12 @@ public class StepDetector implements SensorEventListener {
     /**
      * The number of steps taken.
      */
-    private int stepCount;
+    private int actionCount;
 
-    public StepDetector(){
+    public ActionDetector(){
         mFilter = new Filter(3);
         mStepListeners = new ArrayList<>();
-        stepCount = 0;
+        actionCount = 0;
     }
 
     /**
@@ -148,10 +147,10 @@ public class StepDetector implements SensorEventListener {
      * of the current step count.
      */
     private void onStepDetected(long timestamp, float[] values){
-        stepCount++;
+        actionCount++;
         for (OnStepListener stepListener : mStepListeners){
             stepListener.onStepDetected(timestamp, values);
-            stepListener.onStepCountUpdated(stepCount);
+            stepListener.onStepCountUpdated(actionCount);
         }
     }
 }

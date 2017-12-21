@@ -27,7 +27,7 @@ import cs.umass.edu.myactivitiestoolkit.communication.MHLClientFilter;
 import cs.umass.edu.myactivitiestoolkit.constants.Constants;
 import cs.umass.edu.myactivitiestoolkit.services.SensorService;
 import cs.umass.edu.myactivitiestoolkit.steps.OnStepListener;
-import cs.umass.edu.myactivitiestoolkit.steps.StepDetector;
+import cs.umass.edu.myactivitiestoolkit.steps.ActionDetector;
 import edu.umass.cs.MHLClient.client.MessageReceiver;
 import edu.umass.cs.MHLClient.sensors.AccelerometerReading;
 import edu.umass.cs.MHLClient.sensors.GyroscopeReading;
@@ -54,7 +54,7 @@ public class BandService extends SensorService implements BandGyroscopeEventList
     /** The object which receives sensor data from the Microsoft Band */
     private BandClient bandClient = null;
 
-    private StepDetector stepDetector;
+    private ActionDetector actionDetector;
 
     /**
      * The step count as predicted by your server-side step detection algorithm.
@@ -62,7 +62,7 @@ public class BandService extends SensorService implements BandGyroscopeEventList
     private int serverStepCount = 0;
 
     public BandService(){
-        stepDetector = new StepDetector();
+        actionDetector = new ActionDetector();
     }
 
     @Override
@@ -191,7 +191,7 @@ public class BandService extends SensorService implements BandGyroscopeEventList
     @Override
     protected void registerSensors() {
         // register a listener to receive step events
-        stepDetector.registerOnStepListener(new OnStepListener() {
+        actionDetector.registerOnStepListener(new OnStepListener() {
             @Override
             public void onStepCountUpdated(int stepCount) {
                 broadcastLocalStepCount(stepCount);
@@ -295,7 +295,7 @@ public class BandService extends SensorService implements BandGyroscopeEventList
                 gyroscopeX, gyroscopeY, gyroscopeZ));
         String sample = TextUtils.join(",", data);
         Log.d(TAG, sample);
-        stepDetector.detectSteps(event.getTimestamp(), accelerationX, accelerationY, accelerationZ);
+        actionDetector.detectSteps(event.getTimestamp(), accelerationX, accelerationY, accelerationZ);
     }
 
     //TODO: Remove method from starter code
