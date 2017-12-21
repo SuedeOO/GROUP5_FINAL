@@ -59,10 +59,10 @@ public class JumpFragment extends Fragment{
     private TextView txtAccelerometerReading;
 
     /** Displays the step count computed by the built-in Android step detector. **/
-    private TextView txtAndroidStepCount;
+    private TextView txtHighestJump;
 
     /** Displays the step count computed by your local step detection algorithm. **/
-    private TextView txtLocalStepCount;
+    private TextView txtLastJump;
 
     /** Displays the step count computed by your server-side step detection algorithm. **/
     private TextView txtServerStepCount;
@@ -169,15 +169,6 @@ public class JumpFragment extends Fragment{
                         numberOfPoints++;
 
                     updatePlot();
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ANDROID_STEP_COUNT)) {
-                    int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
-                    displayHighestJump(stepCount);
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_LOCAL_STEP_COUNT)) {
-                    int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
-                    displayLastJump(stepCount);
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_SERVER_STEP_COUNT)) {
-                    int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
-                    displayServerStepCount(stepCount);
                 } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_HIGHEST_JUMP)) {
                     int jumpHeight = intent.getIntExtra(Constants.KEY.HIGHEST_JUMP,  0);
                     displayHighestJump(jumpHeight);
@@ -194,7 +185,7 @@ public class JumpFragment extends Fragment{
                     String output = String.format(Locale.getDefault(), "The average acceleration is (%f,%f,%f).", average_acceleration[0], average_acceleration[1], average_acceleration[2]);
                     Toast.makeText(getActivity().getApplicationContext(), output, Toast.LENGTH_LONG).show();
                     Log.d(TAG, output);
-                }else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ACCELEROMETER_PEAK)){
+                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ACCELEROMETER_PEAK)){
                     long timestamp = intent.getLongExtra(Constants.KEY.ACCELEROMETER_PEAK_TIMESTAMP, -1);
                     float[] values = intent.getFloatArrayExtra(Constants.KEY.ACCELEROMETER_PEAK_VALUE);
                     if (timestamp > 0) {
@@ -221,9 +212,8 @@ public class JumpFragment extends Fragment{
         txtAccelerometerReading = (TextView) view.findViewById(R.id.txtAccelerometerReading);
 
         //obtain references to the step count text fields
-        txtAndroidStepCount = (TextView) view.findViewById(R.id.txtAndroidStepCount);
-        txtLocalStepCount = (TextView) view.findViewById(R.id.txtLocalStepCount);
-        txtServerStepCount = (TextView) view.findViewById(R.id.txtServerStepCount);
+        txtHighestJump = (TextView) view.findViewById(R.id.txtHighestJump);
+        txtLastJump = (TextView) view.findViewById(R.id.txtLastJump);
 
         //obtain reference to the activity text field
         txtActivity = (TextView) view.findViewById(R.id.txtActivity);
@@ -365,7 +355,7 @@ public class JumpFragment extends Fragment{
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                txtLocalStepCount.setText(String.format(Locale.getDefault(), getString(R.string.last_jump), jump));
+                txtHighestJump.setText(String.format(Locale.getDefault(), getString(R.string.last_jump), jump));
             }
         });
     }
@@ -378,7 +368,7 @@ public class JumpFragment extends Fragment{
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                txtAndroidStepCount.setText(String.format(Locale.getDefault(), getString(R.string.highest_jump), jump));
+                txtHighestJump.setText(String.format(Locale.getDefault(), getString(R.string.highest_jump), jump));
             }
         });
     }

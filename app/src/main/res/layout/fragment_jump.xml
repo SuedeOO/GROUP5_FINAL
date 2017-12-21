@@ -42,7 +42,7 @@
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/txtAndroidStepCount"
+                    android:id="@+id/txtHighestJump"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingEnd="10dp"
@@ -54,7 +54,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/txtLocalStepCount"
+                    android:id="@+id/txtLastJump"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingEnd="10dp"

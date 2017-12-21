@@ -227,6 +227,7 @@ public class AccelerometerService extends SensorService implements SensorEventLi
                 @Override
                 public void onActionDetected(long timestamp, float[] values) {
                     broadcastStepDetected(timestamp, values);
+                    broadcastJumpDetected(timestamp, values);
                 }
             });
             mSensorManager.registerListener(stepDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
@@ -340,6 +341,18 @@ public class AccelerometerService extends SensorService implements SensorEventLi
      * Broadcasts a step event to other application components, e.g. the main UI.
      */
     public void broadcastStepDetected(long timestamp, float[] values) {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.KEY.ACCELEROMETER_PEAK_TIMESTAMP, timestamp);
+        intent.putExtra(Constants.KEY.ACCELEROMETER_PEAK_VALUE, values);
+        intent.setAction(Constants.ACTION.BROADCAST_ACCELEROMETER_PEAK);
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+        manager.sendBroadcast(intent);
+    }
+
+    /**
+     * Broadcasts a step event to other application components, e.g. the main UI.
+     */
+    public void broadcastJumpDetected(long timestamp, float[] values) {
         Intent intent = new Intent();
         intent.putExtra(Constants.KEY.ACCELEROMETER_PEAK_TIMESTAMP, timestamp);
         intent.putExtra(Constants.KEY.ACCELEROMETER_PEAK_VALUE, values);
