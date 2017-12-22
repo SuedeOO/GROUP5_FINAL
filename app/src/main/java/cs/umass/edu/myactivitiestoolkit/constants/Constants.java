@@ -35,6 +35,8 @@ public class Constants {
         String BROADCAST_HIGHEST_JUMP = "edu.umass.cs.my-activities-toolkit.action.broadcast-highest-jump";
         String BROADCAST_LAST_THROW = "edu.umass.cs.my-activities-toolkit.action.broadcast-last-throw";
         String BROADCAST_BEST_THROW = "edu.umass.cs.my-activities-toolkit.action.broadcast-best-throw";
+        String BROADCAST_LAST_VTHROW = "edu.umass.cs.my-activities-toolkit.action.broadcast-last-vthrow";
+        String BROADCAST_BEST_VTHROW = "edu.umass.cs.my-activities-toolkit.action.broadcast-best-vthrow";
 
 
     }
@@ -76,6 +78,8 @@ public class Constants {
         String LAST_JUMP = "edu.umass.cs.my-activities-toolkit.key.last-jump";
         String BEST_THROW = "edu.umass.cs.my-activities-toolkit.key.best-throw";
         String LAST_THROW = "edu.umass.cs.my-activities-toolkit.key.last-throw";
+        String BEST_VTHROW = "edu.umass.cs.my-activities-toolkit.key.best-throw";
+        String LAST_VTHROW = "edu.umass.cs.my-activities-toolkit.key.last-throw";
 
     }
 

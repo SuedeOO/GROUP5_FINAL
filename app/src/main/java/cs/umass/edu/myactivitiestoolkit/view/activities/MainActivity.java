@@ -79,10 +79,21 @@ public class MainActivity extends AppCompatActivity {
 //                return 0;
 //            }
 //        };
-        THROW_DATA(ThrowFragment.class) {
+//        THROW_DATA(ThrowFragment.class) {
+//            @Override
+//            public String getTitle() {
+//                return "SHOTPUT!";
+//            }
+//
+//            @Override
+//            public int getPageNumber() {
+//                return 0;
+//            }
+//        };
+        THROW_DATA(VThrowFragment.class) {
             @Override
             public String getTitle() {
-                return "SHOTPUT!";
+                return "Phone in sky";
             }
 
             @Override

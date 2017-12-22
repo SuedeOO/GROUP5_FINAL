@@ -15,7 +15,9 @@ import org.json.JSONObject;
 
 import cs.umass.edu.myactivitiestoolkit.R;
 import cs.umass.edu.myactivitiestoolkit.activity.OnThrowListener;
+import cs.umass.edu.myactivitiestoolkit.activity.OnVerticalThrowListener;
 import cs.umass.edu.myactivitiestoolkit.activity.ThrowDetector;
+import cs.umass.edu.myactivitiestoolkit.activity.VerticalThrowDetector;
 import cs.umass.edu.myactivitiestoolkit.communication.MHLClientFilter;
 import cs.umass.edu.myactivitiestoolkit.activity.JumpDetector;
 import cs.umass.edu.myactivitiestoolkit.processing.Filter;
@@ -103,6 +105,7 @@ public class AccelerometerService extends SensorService implements SensorEventLi
     private final StepDetector stepDetector;
     private final JumpDetector jumpDetector;
     private final ThrowDetector throwDetector;
+    private final VerticalThrowDetector verticalThrowDetector;
     /**
      * The step count as predicted by the Android built-in step detection algorithm.
      */
@@ -121,6 +124,7 @@ public class AccelerometerService extends SensorService implements SensorEventLi
         stepDetector = new StepDetector();
         jumpDetector = new JumpDetector();
         throwDetector = new ThrowDetector();
+        verticalThrowDetector = new VerticalThrowDetector();
 
     }
 
@@ -249,7 +253,7 @@ public class AccelerometerService extends SensorService implements SensorEventLi
             }
         });
 
-        throwDetector.registerOnJumpListener(new OnThrowListener() {
+        throwDetector.registerOnThrowListener(new OnThrowListener() {
             @Override
             public void OnThrowUpadated(int distance) {
                 broadcastlastThrow(distance);
@@ -260,9 +264,22 @@ public class AccelerometerService extends SensorService implements SensorEventLi
                 broadcastbestThrow(distance);
             }
         });
+
+        verticalThrowDetector.registerVThrowListener(new OnVerticalThrowListener() {
+            @Override
+            public void onVThrowUpdated(int distance) {
+                broadcastlastVThrow(distance);
+            }
+
+            @Override
+            public void onBestVThrowUpdated(int distance) {
+                broadcastbestVThrow(distance);
+            }
+        });
         //mSensorManager.registerListener(jumpDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
         //mSensorManager.registerListener(stepDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
-        mSensorManager.registerListener(throwDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+        //mSensorManager.registerListener(throwDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+        mSensorManager.registerListener(verticalThrowDetector, mAccelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
 
 //        Intent intent = new Intent();
 //        if(intent.getIntExtra(Constants.PAGE.PAGE_ZERO,-1)==0){
@@ -283,7 +300,7 @@ public class AccelerometerService extends SensorService implements SensorEventLi
 
         if (mSensorManager != null) {
             mSensorManager.unregisterListener(this, mAccelerometerSensor);
-            mSensorManager.unregisterListener(throwDetector, mAccelerometerSensor);
+            mSensorManager.unregisterListener(verticalThrowDetector, mAccelerometerSensor);
            // mSensorManager.unregisterListener(stepDetector, mAccelerometerSensor);
 
             mSensorManager.unregisterListener(this, mStepSensor);
@@ -442,6 +459,22 @@ public class AccelerometerService extends SensorService implements SensorEventLi
         Intent intent = new Intent();
         intent.putExtra(Constants.KEY.BEST_THROW, distance);
         intent.setAction(Constants.ACTION.BROADCAST_BEST_THROW);
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+        manager.sendBroadcast(intent);
+    }
+
+    public void broadcastlastVThrow(int distance){
+        Intent intent = new Intent();
+        intent.putExtra(Constants.KEY.LAST_VTHROW, distance);
+        intent.setAction(Constants.ACTION.BROADCAST_LAST_VTHROW);
+        LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
+        manager.sendBroadcast(intent);
+    }
+
+    public void broadcastbestVThrow(int distance){
+        Intent intent = new Intent();
+        intent.putExtra(Constants.KEY.BEST_VTHROW, distance);
+        intent.setAction(Constants.ACTION.BROADCAST_BEST_VTHROW);
         LocalBroadcastManager manager = LocalBroadcastManager.getInstance(this);
         manager.sendBroadcast(intent);
     }

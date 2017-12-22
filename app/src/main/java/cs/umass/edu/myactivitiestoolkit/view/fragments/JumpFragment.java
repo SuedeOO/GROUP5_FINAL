@@ -86,7 +86,7 @@ public class JumpFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_jump, container, false);
         txtHighestJump = (TextView) view.findViewById(R.id.txtHighestJump);
-        txtLastJump = (TextView) view.findViewById(R.id.txtLastThrow);
+        txtLastJump = (TextView) view.findViewById(R.id.txtLastVThrow);
 
         jumpAccelerometer = (Switch) view.findViewById(R.id.jumpAccelerometer);
         jumpAccelerometer.setChecked(serviceManager.isServiceRunning(AccelerometerService.class));

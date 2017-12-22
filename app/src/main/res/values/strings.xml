@@ -60,7 +60,13 @@
 
     <string name="best_throw_initial">Best Throw: 0</string>
     <string name="last_throw_initial">Last Throw: 0</string>
-    <string name="throw_far">SHOT PUT!</string>
 
+    <string name="last_vthrow" formatted="false">Last Throw: %d</string>
+    <string name="best_vthrow" formatted="false">Best Throw: %d</string>
+
+    <string name="best_vthrow_initial">Best Throw: 0</string>
+    <string name="last_vthrow_initial">Last Throw: 0</string>
+    <string name="throw_far">SHOT PUT!</string>
+    <string name="throw_high">Throw up your phone!</string>
     <string name="app_details">CS390MB : Mobile Health Sensing</string>
 </resources>

@@ -37,7 +37,7 @@ public class ThrowDetector implements SensorEventListener {
         window_size= 0;
     }
 
-    public void registerOnJumpListener(final OnThrowListener throwListener){
+    public void registerOnThrowListener(final OnThrowListener throwListener){
         mThrowListeners.add(throwListener);
     }
 

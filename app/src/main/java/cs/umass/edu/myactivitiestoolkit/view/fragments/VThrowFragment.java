@@ -28,19 +28,19 @@ import cs.umass.edu.myactivitiestoolkit.services.msband.BandService;
  * Created by Jon on 12/10/2017.
  */
 
-public class ThrowFragment extends Fragment {
+public class VThrowFragment extends Fragment {
     /**
      * Used during debugging to identify logs by class.
      */
     @SuppressWarnings("unused")
-    private static final String TAG = ThrowFragment.class.getName();
+    private static final String TAG = VThrowFragment.class.getName();
 
     /**
      * The switch which toggles the {@link AccelerometerService}.
      **/
-    public Switch throwSwitch;
-    private TextView txtBestThrow;
-    private TextView txtLastThrow;
+    public Switch VThrowSwitch;
+    private TextView txtBestVThrow;
+    private TextView txtLastVThrow;
     private ServiceManager serviceManager;
 
     /**
@@ -58,18 +58,18 @@ public class ThrowFragment extends Fragment {
                     //System.out.println("??");
                     int message = intent.getIntExtra(Constants.KEY.MESSAGE, -1);
                     if (message == Constants.MESSAGE.ACCELEROMETER_SERVICE_STOPPED) {
-                        throwSwitch.setChecked(false);
+                        VThrowSwitch.setChecked(false);
                     } else if (message == Constants.MESSAGE.BAND_SERVICE_STOPPED) {
-                        throwSwitch.setChecked(false);
+                        VThrowSwitch.setChecked(false);
                     }
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_LAST_THROW)) {
+                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_LAST_VTHROW)) {
                     //System.out.println("last");
-                    int distance = intent.getIntExtra(Constants.KEY.LAST_THROW, 0);
-                    displayLastThrow(distance);
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_BEST_THROW)) {
+                    int distance = intent.getIntExtra(Constants.KEY.LAST_VTHROW, 0);
+                    displayLastVThrow(distance);
+                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_BEST_VTHROW)) {
                     //System.out.println("highest");
-                    int distance = intent.getIntExtra(Constants.KEY.BEST_THROW, 0);
-                    displayBestThrow(distance);
+                    int distance = intent.getIntExtra(Constants.KEY.BEST_VTHROW, 0);
+                    displayBestVThrow(distance);
                 }
             }
         }
@@ -84,13 +84,13 @@ public class ThrowFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_throw, container, false);
-        txtBestThrow = (TextView) view.findViewById(R.id.txtLastVThrow);
-        txtLastThrow = (TextView) view.findViewById(R.id.txtLastVThrow);
+        final View view = inflater.inflate(R.layout.fragment_vthrow, container, false);
+        txtBestVThrow = (TextView) view.findViewById(R.id.txtBestVThrow);
+        txtLastVThrow = (TextView) view.findViewById(R.id.txtLastVThrow);
 
-        throwSwitch = (Switch) view.findViewById(R.id.vThrowSwitch);
-        throwSwitch.setChecked(serviceManager.isServiceRunning(AccelerometerService.class));
-        throwSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        VThrowSwitch = (Switch) view.findViewById(R.id.vThrowSwitch);
+        VThrowSwitch.setChecked(serviceManager.isServiceRunning(AccelerometerService.class));
+        VThrowSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean enabled) {
                 if (enabled) {
@@ -117,21 +117,21 @@ public class ThrowFragment extends Fragment {
         return view;
     }
 
-    private void displayLastThrow(final int distance) {
+    private void displayLastVThrow(final int distance) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                txtLastThrow.setText(String.format(Locale.getDefault(), getString(R.string.last_throw), distance));
+                txtLastVThrow.setText(String.format(Locale.getDefault(), getString(R.string.last_vthrow), distance));
             }
         });
     }
 
 
-    private void displayBestThrow(final int distance) {
+    private void displayBestVThrow(final int distance) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                txtBestThrow.setText(String.format(Locale.getDefault(), getString(R.string.best_throw), distance));
+                txtBestVThrow.setText(String.format(Locale.getDefault(), getString(R.string.best_vthrow), distance));
             }
         });
     }
@@ -144,8 +144,8 @@ public class ThrowFragment extends Fragment {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constants.ACTION.BROADCAST_MESSAGE);
         filter.addAction(Constants.ACTION.BROADCAST_AVERAGE_ACCELERATION);
-        filter.addAction(Constants.ACTION.BROADCAST_BEST_THROW);
-        filter.addAction(Constants.ACTION.BROADCAST_LAST_THROW);
+        filter.addAction(Constants.ACTION.BROADCAST_BEST_VTHROW);
+        filter.addAction(Constants.ACTION.BROADCAST_LAST_VTHROW);
         broadcastManager.registerReceiver(receiver, filter);
     }
 
