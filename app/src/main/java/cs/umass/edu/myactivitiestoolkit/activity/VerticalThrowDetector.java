@@ -56,21 +56,21 @@ public class VerticalThrowDetector implements SensorEventListener {
             double[] xyz = mFilter.getFilteredValues(sensorEvent.values);
             double magnitude = Math.sqrt(Math.pow(xyz[0],2)+Math.pow(xyz[1],2)+Math.pow(xyz[2],2));
             //System.out.println(magnitude);
-            if(window_size<30){
-                if(magnitude > max){
+            if(window_size<40){
+                if(magnitude > max && magnitude > 9.8){
                     //System.out.println("3");
                     max = magnitude;
                     startTimeStamp = sensorEvent.timestamp;
                 }
-                if(magnitude < 1.5){
+                if(magnitude < 2 && window_size >5){
                    // System.out.println("1");
                     endTimeStamp = sensorEvent.timestamp;
                     if(startTimeStamp != 0 && endTimeStamp !=0 && endTimeStamp > startTimeStamp) {
                         detectThrow(startTimeStamp, endTimeStamp);
-                        window_size = 30;
+                        window_size = 40;
                     }
                 }
-                //System.out.println(window_size);
+                System.out.println(window_size);
                 window_size++;
             }else{
                // System.out.println("2");

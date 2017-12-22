@@ -67,10 +67,10 @@ public class JumpDetector implements SensorEventListener {
                 smallestMagTimeStamp = event.timestamp;
             }
             count ++;
-            if(count == 30){
+            if(count == 20){
                // System.out.println("!");
                 count = 0;
-                if(Max - Min > 10){
+                if(Max - Min > 15 && largestMagTimeStamp > smallestMagTimeStamp){
                     //System.out.println("call");
                     detectJump(largestMagTimeStamp,smallestMagTimeStamp, Min, Max);
 

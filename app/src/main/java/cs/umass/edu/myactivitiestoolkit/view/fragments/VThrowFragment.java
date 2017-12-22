@@ -88,7 +88,7 @@ public class VThrowFragment extends Fragment {
         txtBestVThrow = (TextView) view.findViewById(R.id.txtBestVThrow);
         txtLastVThrow = (TextView) view.findViewById(R.id.txtLastVThrow);
 
-        VThrowSwitch = (Switch) view.findViewById(R.id.vThrowSwitch);
+        VThrowSwitch = (Switch) view.findViewById(R.id.throwSwitch);
         VThrowSwitch.setChecked(serviceManager.isServiceRunning(AccelerometerService.class));
         VThrowSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

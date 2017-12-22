@@ -173,19 +173,9 @@ public class ExerciseFragment extends Fragment {
                     } else if (message == Constants.MESSAGE.BAND_SERVICE_STOPPED){
                         switchAccelerometer.setChecked(false);
                     }
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ANDROID_STEP_COUNT)) {
-                    int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
-                    displayAndroidStepCount(stepCount);
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_LOCAL_STEP_COUNT)) {
+                }else if (intent.getAction().equals(Constants.ACTION.BROADCAST_LOCAL_STEP_COUNT)) {
                     int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
                     displayLocalStepCount(stepCount);
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_SERVER_STEP_COUNT)) {
-                    int stepCount = intent.getIntExtra(Constants.KEY.STEP_COUNT, 0);
-                    displayServerStepCount(stepCount);
-                } else if (intent.getAction().equals(Constants.ACTION.BROADCAST_ACTIVITY)) {
-                    String activity = intent.getStringExtra(Constants.KEY.ACTIVITY);
-                    Log.d(TAG, "Received activity : " + activity);
-                    displayActivity(activity);
                 }
             }
         }
@@ -206,7 +196,7 @@ public class ExerciseFragment extends Fragment {
         txtAccelerometerReading = (TextView) view.findViewById(R.id.txtAccelerometerReading);
 
         //obtain references to the step count text fields
-        txtAndroidStepCount = (TextView) view.findViewById(R.id.txtAndroidStepCount);
+        //txtAndroidStepCount = (TextView) view.findViewById(R.id.txtAndroidStepCount);
         txtLocalStepCount = (TextView) view.findViewById(R.id.txtLocalStepCount);
         txtServerStepCount = (TextView) view.findViewById(R.id.txtServerStepCount);
 

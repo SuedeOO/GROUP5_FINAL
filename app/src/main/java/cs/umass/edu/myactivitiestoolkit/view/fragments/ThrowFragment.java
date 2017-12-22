@@ -85,10 +85,10 @@ public class ThrowFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_throw, container, false);
-        txtBestThrow = (TextView) view.findViewById(R.id.txtLastVThrow);
-        txtLastThrow = (TextView) view.findViewById(R.id.txtLastVThrow);
+        txtBestThrow = (TextView) view.findViewById(R.id.txtBestThrow);
+        txtLastThrow = (TextView) view.findViewById(R.id.txtLastThrow);
 
-        throwSwitch = (Switch) view.findViewById(R.id.vThrowSwitch);
+        throwSwitch = (Switch) view.findViewById(R.id.throwSwitch);
         throwSwitch.setChecked(serviceManager.isServiceRunning(AccelerometerService.class));
         throwSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

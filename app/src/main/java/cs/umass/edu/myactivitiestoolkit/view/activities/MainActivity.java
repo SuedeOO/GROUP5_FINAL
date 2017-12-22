@@ -61,36 +61,29 @@ public class MainActivity extends AppCompatActivity {
      * If you wish to add another tab, e.g. for your final project, just follow the same setup.
      */
     public enum PAGES {
-//        PHYSICAL_INFO(InfoFragment.class)  {
-//            @Override
-//            public String getTitle() { return "Physical Info"; }
-//
-//            @Override
-//            public int getPageNumber() { return 0; }
-//        },
-//        JUMP_DATA(JumpFragment.class) {
-//            @Override
-//            public String getTitle() {
-//                return "Jump!";
-//            }
-//
-//            @Override
-//            public int getPageNumber() {
-//                return 0;
-//            }
-//        };
-//        THROW_DATA(ThrowFragment.class) {
-//            @Override
-//            public String getTitle() {
-//                return "SHOTPUT!";
-//            }
-//
-//            @Override
-//            public int getPageNumber() {
-//                return 0;
-//            }
-//        };
-        THROW_DATA(VThrowFragment.class) {
+        JUMP_DATA(JumpFragment.class) {
+            @Override
+            public String getTitle() {
+                return "Jump!";
+            }
+
+            @Override
+            public int getPageNumber() {
+                return 0;
+            }
+        },
+        THROW_DATA(ThrowFragment.class) {
+            @Override
+            public String getTitle() {
+                return "SHOTPUT!";
+            }
+
+            @Override
+            public int getPageNumber() {
+                return 1;
+            }
+        },
+        VTHROW_DATA(VThrowFragment.class) {
             @Override
             public String getTitle() {
                 return "Phone in sky";
@@ -98,32 +91,20 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public int getPageNumber() {
-                return 0;
+                return 2;
+            }
+        },
+       MOTION_DATA(ExerciseFragment.class) {
+            @Override
+            public String getTitle() {
+                return "Spin Phone";
+            }
+
+            @Override
+            public int getPageNumber() {
+                return 3;
             }
         };
-
-//        THROW_DATA(ThrowFragment.class) {
-//            @Override
-//            public String getTitle() {
-//                return "Throw Data";
-//            }
-//
-//            @Override
-//            public int getPageNumber() {
-//                return 0;
-//            }
-//        },
-//        MOTION_DATA(ExerciseFragment.class) {
-//            @Override
-//            public String getTitle() {
-//                return "Spin Phone";
-//            }
-//
-//            @Override
-//            public int getPageNumber() {
-//                return 1;
-//            }
-//        };
 //        AUDIO_DATA(AudioFragment.class) {
 //            @Override
 //            public String getTitle() {
